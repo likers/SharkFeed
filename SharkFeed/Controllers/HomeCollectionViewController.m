@@ -12,10 +12,17 @@
 
 @implementation HomeCollectionViewController
 
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        self.view.backgroundColor = [UIColor whiteColor];
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
+    
 }
 
 

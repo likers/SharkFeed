@@ -6,7 +6,6 @@
 //  Copyright © 2016 likers33. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 
 
 @interface HomeCollectionViewController : UIViewController
