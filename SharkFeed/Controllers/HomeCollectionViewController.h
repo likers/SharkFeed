@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  HomeCollectionViewController.h
 //  SharkFeed
 //
 //  Created by Jinhuan Li on 8/8/16.
@@ -8,8 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
 
+@interface HomeCollectionViewController : UIViewController
 
 @end
-

@@ -9,10 +9,10 @@
 /* Begin PBXBuildFile section */
 		EDD9AF7C1D59757D00D8623C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EDD9AF7B1D59757D00D8623C /* main.m */; };
 		EDD9AF7F1D59757D00D8623C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EDD9AF7E1D59757D00D8623C /* AppDelegate.m */; };
-		EDD9AF821D59757D00D8623C /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EDD9AF811D59757D00D8623C /* ViewController.m */; };
 		EDD9AF851D59757D00D8623C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EDD9AF831D59757D00D8623C /* Main.storyboard */; };
 		EDD9AF871D59757D00D8623C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDD9AF861D59757D00D8623C /* Assets.xcassets */; };
 		EDD9AF8A1D59757D00D8623C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EDD9AF881D59757D00D8623C /* LaunchScreen.storyboard */; };
+		EDD9AF961D59816700D8623C /* HomeCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EDD9AF951D59816700D8623C /* HomeCollectionViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,12 +20,12 @@
 		EDD9AF7B1D59757D00D8623C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EDD9AF7D1D59757D00D8623C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		EDD9AF7E1D59757D00D8623C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		EDD9AF801D59757D00D8623C /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		EDD9AF811D59757D00D8623C /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		EDD9AF841D59757D00D8623C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EDD9AF861D59757D00D8623C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EDD9AF891D59757D00D8623C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EDD9AF8B1D59757D00D8623C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EDD9AF941D59814100D8623C /* HomeCollectionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HomeCollectionViewController.h; path = Controllers/HomeCollectionViewController.h; sourceTree = "<group>"; };
+		EDD9AF951D59816700D8623C /* HomeCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HomeCollectionViewController.m; path = Controllers/HomeCollectionViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,10 +58,11 @@
 		EDD9AF791D59757D00D8623C /* SharkFeed */ = {
 			isa = PBXGroup;
 			children = (
+				EDD9AF931D59811C00D8623C /* Controllers */,
+				EDD9AF921D59811700D8623C /* Views */,
+				EDD9AF911D59811100D8623C /* Models */,
 				EDD9AF7D1D59757D00D8623C /* AppDelegate.h */,
 				EDD9AF7E1D59757D00D8623C /* AppDelegate.m */,
-				EDD9AF801D59757D00D8623C /* ViewController.h */,
-				EDD9AF811D59757D00D8623C /* ViewController.m */,
 				EDD9AF831D59757D00D8623C /* Main.storyboard */,
 				EDD9AF861D59757D00D8623C /* Assets.xcassets */,
 				EDD9AF881D59757D00D8623C /* LaunchScreen.storyboard */,
@@ -77,6 +78,29 @@
 				EDD9AF7B1D59757D00D8623C /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		EDD9AF911D59811100D8623C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		EDD9AF921D59811700D8623C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		EDD9AF931D59811C00D8623C /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				EDD9AF941D59814100D8623C /* HomeCollectionViewController.h */,
+				EDD9AF951D59816700D8623C /* HomeCollectionViewController.m */,
+			);
+			name = Controllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -149,7 +173,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EDD9AF821D59757D00D8623C /* ViewController.m in Sources */,
+				EDD9AF961D59816700D8623C /* HomeCollectionViewController.m in Sources */,
 				EDD9AF7F1D59757D00D8623C /* AppDelegate.m in Sources */,
 				EDD9AF7C1D59757D00D8623C /* main.m in Sources */,
 			);
@@ -265,6 +289,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = SharkFeed/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.likers33.SharkFeed;
@@ -276,6 +301,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = SharkFeed/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.likers33.SharkFeed;
@@ -302,6 +328,7 @@
 				EDD9AF901D59757D00D8623C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
