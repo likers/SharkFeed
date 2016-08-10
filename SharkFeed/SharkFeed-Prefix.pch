@@ -17,4 +17,8 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 #import "Masonry.h"
+#import "Constants.h"
 #endif
+
+#define deviceWidth [[UIScreen mainScreen] bounds].size.width
+#define deviceHeight [[UIScreen mainScreen] bounds].size.height

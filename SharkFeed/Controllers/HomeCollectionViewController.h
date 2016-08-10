@@ -8,6 +8,10 @@
 
 
 
-@interface HomeCollectionViewController : UIViewController
+@interface HomeCollectionViewController : UIViewController<UICollectionViewDelegate, UICollectionViewDataSource> {
+    CGFloat viewMargin;
+}
+
+@property (nonatomic, strong) UICollectionView *photoCollection;
 
 @end
