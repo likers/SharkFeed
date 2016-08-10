@@ -31,7 +31,7 @@
 
 - (void)initNavigationBar {
     UIImageView *navImageBackground = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"NavbarBackground"]];
-    navImageBackground.contentMode = UIViewContentModeScaleAspectFill;
+    navImageBackground.contentMode = UIViewContentModeScaleToFill;
     [self.view addSubview:navImageBackground];
     
     [navImageBackground mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -44,11 +44,10 @@
     [navImageBackground addSubview:logoString];
     
     [logoString mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(navImageBackground).with.offset(21);
-        make.bottom.equalTo(navImageBackground).with.offset(-21);
         make.center.equalTo(navImageBackground);
+        make.width.mas_equalTo(259);
+        make.height.mas_equalTo(22);
     }];
-    
 }
 
 - (void)initCollectionView {
