@@ -7,9 +7,12 @@
 //
 
 
+#import "PhotoModel.h"
 
-@interface HomeCollectionViewCell : UICollectionViewCell
+@interface HomeCollectionViewCell : UICollectionViewCell {
+    UIImageView *imageView;
+}
 
-
+@property (nonatomic, strong) PhotoModel *photo;
 
 @end

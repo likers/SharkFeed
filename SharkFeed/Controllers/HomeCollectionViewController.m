@@ -12,7 +12,7 @@
 
 @implementation HomeCollectionViewController
 
-@synthesize photoCollection;
+@synthesize photoCollection, photoArray;
 
 - (instancetype)init {
     self = [super init];
@@ -30,7 +30,8 @@
     viewMargin = 21;
     [super viewDidLoad];
     [self initNavigationBar];
-    [self initCollectionView];
+    [self initData];
+//    [self initCollectionView];
 }
 
 - (void)initNavigationBar {
@@ -54,6 +55,30 @@
     }];
 }
 
+- (void)initData {
+    JLApi *api = [[JLApi alloc] init];
+    photoArray = [[NSMutableArray alloc] init];
+    [api searchSharkForPage:1 completion:^(NSData *data, NSInteger statusCode) {
+        if (statusCode == 200) {
+            NSError* error;
+            NSDictionary* result = [NSJSONSerialization JSONObjectWithData:data
+                                                                 options:kNilOptions
+                                                                   error:&error];
+            NSLog(@"total1: %ld", [[[result objectForKey:@"photos"] objectForKey:@"total"] integerValue]);
+            for (NSDictionary *dic in [[result objectForKey:@"photos"] objectForKey:@"photo"]) {
+                PhotoModel *photo = [[PhotoModel alloc] init];
+                [photo setPhotoModelWithDic:dic];
+                [photoArray addObject:photo];
+            }
+            NSLog(@"total2: %lu", (unsigned long)[photoArray count]);
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self initCollectionView];
+            });
+        }
+    }];
+}
+
 - (void)initCollectionView {
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
     flowLayout.minimumInteritemSpacing = 6;
@@ -64,7 +89,7 @@
     photoCollection.delegate = self;
     photoCollection.dataSource = self;
     photoCollection.backgroundColor = [UIColor whiteColor];
-    [photoCollection registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"cellIdentifier"];
+    [photoCollection registerClass:[HomeCollectionViewCell class] forCellWithReuseIdentifier:@"cellIdentifier"];
     [self.view addSubview:photoCollection];
     
     [photoCollection mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -74,12 +99,12 @@
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return 25;
+    return [photoArray count];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cellIdentifier" forIndexPath:indexPath];
-    cell.backgroundColor = [UIColor greenColor];
+    HomeCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cellIdentifier" forIndexPath:indexPath];
+    cell.photo = [photoArray objectAtIndex:indexPath.row];
     return cell;
 }
 

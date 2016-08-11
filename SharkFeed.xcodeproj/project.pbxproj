@@ -20,6 +20,8 @@
 		EDA6DE281D5A8881002CF962 /* ViewController+MASAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = EDA6DE1D1D5A8881002CF962 /* ViewController+MASAdditions.m */; };
 		EDA6DE2C1D5BBADA002CF962 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = EDA6DE2B1D5BBADA002CF962 /* Constants.m */; };
 		EDA6DE2F1D5BC297002CF962 /* HomeCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EDA6DE2E1D5BC297002CF962 /* HomeCollectionViewCell.m */; };
+		EDA6DE321D5C1327002CF962 /* JLApi.m in Sources */ = {isa = PBXBuildFile; fileRef = EDA6DE311D5C1327002CF962 /* JLApi.m */; };
+		EDA6DE361D5C1F14002CF962 /* PhotoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EDA6DE351D5C1F14002CF962 /* PhotoModel.m */; };
 		EDD9AF7C1D59757D00D8623C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EDD9AF7B1D59757D00D8623C /* main.m */; };
 		EDD9AF7F1D59757D00D8623C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EDD9AF7E1D59757D00D8623C /* AppDelegate.m */; };
 		EDD9AF851D59757D00D8623C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EDD9AF831D59757D00D8623C /* Main.storyboard */; };
@@ -60,6 +62,10 @@
 		EDA6DE2B1D5BBADA002CF962 /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Constants.m; path = Utilities/Constants.m; sourceTree = "<group>"; };
 		EDA6DE2D1D5BC283002CF962 /* HomeCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HomeCollectionViewCell.h; path = Views/HomeCollectionViewCell.h; sourceTree = "<group>"; };
 		EDA6DE2E1D5BC297002CF962 /* HomeCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HomeCollectionViewCell.m; path = Views/HomeCollectionViewCell.m; sourceTree = "<group>"; };
+		EDA6DE301D5C1319002CF962 /* JLApi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = JLApi.h; path = Utilities/JLApi.h; sourceTree = "<group>"; };
+		EDA6DE311D5C1327002CF962 /* JLApi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JLApi.m; path = Utilities/JLApi.m; sourceTree = "<group>"; };
+		EDA6DE331D5C1EFB002CF962 /* PhotoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PhotoModel.h; path = Models/PhotoModel.h; sourceTree = "<group>"; };
+		EDA6DE351D5C1F14002CF962 /* PhotoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PhotoModel.m; path = Models/PhotoModel.m; sourceTree = "<group>"; };
 		EDD9AF771D59757D00D8623C /* SharkFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SharkFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDD9AF7B1D59757D00D8623C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EDD9AF7D1D59757D00D8623C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -129,6 +135,8 @@
 			children = (
 				EDA6DE2A1D5BB683002CF962 /* Constants.h */,
 				EDA6DE2B1D5BBADA002CF962 /* Constants.m */,
+				EDA6DE301D5C1319002CF962 /* JLApi.h */,
+				EDA6DE311D5C1327002CF962 /* JLApi.m */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -180,6 +188,8 @@
 		EDD9AF911D59811100D8623C /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				EDA6DE331D5C1EFB002CF962 /* PhotoModel.h */,
+				EDA6DE351D5C1F14002CF962 /* PhotoModel.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -275,6 +285,7 @@
 			files = (
 				EDA6DE261D5A8881002CF962 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
 				EDA6DE241D5A8881002CF962 /* MASViewConstraint.m in Sources */,
+				EDA6DE321D5C1327002CF962 /* JLApi.m in Sources */,
 				EDA6DE1F1D5A8881002CF962 /* MASCompositeConstraint.m in Sources */,
 				EDA6DE251D5A8881002CF962 /* NSArray+MASAdditions.m in Sources */,
 				EDD9AF961D59816700D8623C /* HomeCollectionViewController.m in Sources */,
@@ -284,6 +295,7 @@
 				EDD9AF7C1D59757D00D8623C /* main.m in Sources */,
 				EDA6DE281D5A8881002CF962 /* ViewController+MASAdditions.m in Sources */,
 				EDA6DE271D5A8881002CF962 /* View+MASAdditions.m in Sources */,
+				EDA6DE361D5C1F14002CF962 /* PhotoModel.m in Sources */,
 				EDA6DE231D5A8881002CF962 /* MASViewAttribute.m in Sources */,
 				EDA6DE201D5A8881002CF962 /* MASConstraint.m in Sources */,
 				EDA6DE211D5A8881002CF962 /* MASConstraintMaker.m in Sources */,
