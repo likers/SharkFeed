@@ -6,7 +6,12 @@
 //  Copyright © 2016 likers33. All rights reserved.
 //
 
-
+typedef NS_ENUM(NSUInteger, ImageStatus) {
+    Empty,
+    Downloading,
+    Ready,
+    Failed
+};
 
 @interface PhotoModel : NSObject
 
@@ -33,9 +38,12 @@
 @property (nonatomic, assign) NSInteger heightLarge;
 @property (nonatomic, assign) NSInteger widthLarge;
 
-@property (nonatomic, copy) NSString *urlOrigion;
-@property (nonatomic, assign) NSInteger heightOrigion;
-@property (nonatomic, assign) NSInteger widthOrigion;
+@property (nonatomic, copy) NSString *urlOrigin;
+@property (nonatomic, assign) NSInteger heightOrigin;
+@property (nonatomic, assign) NSInteger widthOrigin;
+
+@property (nonatomic, strong) NSData *currentImageData;
+@property (nonatomic, assign) ImageStatus currentImageStatus;
 
 - (void)setPhotoModelWithDic:(NSDictionary *)dic;
 

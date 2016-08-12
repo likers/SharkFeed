@@ -17,7 +17,8 @@
 @synthesize urlTiny, heightTiny, widthTiny;
 @synthesize urlCommon, heightCommon, widthCommon;
 @synthesize urlLarge, heightLarge, widthLarge;
-@synthesize urlOrigion, heightOrigion, widthOrigion;
+@synthesize urlOrigin, heightOrigin, widthOrigin;
+@synthesize currentImageData, currentImageStatus;
 
 - (instancetype)init {
     self = [super init];
@@ -45,9 +46,12 @@
         self.heightLarge = 0;
         self.widthLarge = 0;
         
-        self.urlOrigion = @"";
-        self.heightOrigion = 0;
-        self.widthOrigion = 0;
+        self.urlOrigin = @"";
+        self.heightOrigin = 0;
+        self.widthOrigin = 0;
+        
+        self.currentImageData = nil;
+        self.currentImageStatus = Empty;
     }
     
     return self;
@@ -78,9 +82,9 @@
         self.heightLarge = [dic objectForKey:@"height_l"] == nil ? 0 : [[dic objectForKey:@"height_l"] integerValue];
         self.widthLarge = [dic objectForKey:@"width_l"] == nil ? 0 : [[dic objectForKey:@"width_l"] integerValue];
         
-        self.urlOrigion = [dic objectForKey:@"url_o"] == nil ? @"" : [dic objectForKey:@"url_o"];
-        self.heightOrigion = [dic objectForKey:@"height_o"] == nil ? 0 : [[dic objectForKey:@"height_o"] integerValue];
-        self.widthOrigion = [dic objectForKey:@"width_o"] == nil ? 0 : [[dic objectForKey:@"width_o"] integerValue];
+        self.urlOrigin = [dic objectForKey:@"url_o"] == nil ? @"" : [dic objectForKey:@"url_o"];
+        self.heightOrigin = [dic objectForKey:@"height_o"] == nil ? 0 : [[dic objectForKey:@"height_o"] integerValue];
+        self.widthOrigin = [dic objectForKey:@"width_o"] == nil ? 0 : [[dic objectForKey:@"width_o"] integerValue];
     }
 }
 

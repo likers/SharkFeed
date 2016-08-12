@@ -8,11 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import "HomeCollectionViewController.h"
+#import "ImageDownloadOperation.h"
 
 
 @implementation HomeCollectionViewController
 
-@synthesize photoCollection, photoArray;
+@synthesize photoCollection, photoArray, imageCache;
 
 - (instancetype)init {
     self = [super init];
@@ -58,6 +59,11 @@
 - (void)initData {
     JLApi *api = [[JLApi alloc] init];
     photoArray = [[NSMutableArray alloc] init];
+    imageCache = [[NSCache alloc] init];
+    pendingDownloadDic = [[NSMutableDictionary alloc] init];
+    downloadQueue = [[NSOperationQueue alloc] init];
+    downloadQueue.maxConcurrentOperationCount = 5;
+    
     [api searchSharkForPage:1 completion:^(NSData *data, NSInteger statusCode) {
         if (statusCode == 200) {
             NSError* error;
@@ -98,13 +104,21 @@
     }];
 }
 
+// MARK: collectionView datasource and delegation
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return [photoArray count];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+//    NSLog(@"%ld", (long)indexPath.row);
+    PhotoModel *photo = [photoArray objectAtIndex:indexPath.row];
     HomeCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cellIdentifier" forIndexPath:indexPath];
-    cell.photo = [photoArray objectAtIndex:indexPath.row];
+    cell.imageView.image = nil;
+    cell.photo = photo;
+    if (photo.currentImageStatus == Empty) {
+        [self downloadForPhoto:photoArray[indexPath.row] Index:indexPath];
+    }
+    
     return cell;
 }
 
@@ -113,5 +127,57 @@
     return CGSizeMake(cellSize, cellSize);
 }
 
+// MARK: imageDownloader
+- (void)downloadForPhoto:(PhotoModel *)photo Index:(NSIndexPath *)indexPath {
+    if (photo.currentImageStatus == Ready || [pendingDownloadDic objectForKey:indexPath] != nil) {
+        return;
+    } else {
+        ImageDownloadOperation *downloader = [[ImageDownloadOperation alloc] initWithPhoto:photo];
+        downloader.completionBlock = ^{
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                [pendingDownloadDic removeObjectForKey:indexPath];
+                [self.photoCollection reloadItemsAtIndexPaths:@[indexPath]];
+            }];
+        };
+        [pendingDownloadDic setObject:downloader forKey:indexPath];
+        [downloadQueue addOperation:downloader];
+    }
+}
+
+// MARK: - ScrollView delegate
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    if (!decelerate) {
+        [self loadImageForOnscreenCells];
+    }
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    [self loadImageForOnscreenCells];
+}
+
+- (void)loadImageForOnscreenCells {
+    NSArray *pathArray = [self.photoCollection indexPathsForVisibleItems];
+    NSMutableArray *cancelArray = [[NSMutableArray alloc] init];
+    [pendingDownloadDic enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+        if (![pathArray containsObject:key]) {
+            [cancelArray addObject:key];
+        }
+    }];
+    for (NSIndexPath *index in cancelArray) {
+        NSLog(@"cancel row: %ld",(long)index.row);
+        [[pendingDownloadDic objectForKey:index] cancel];
+        [pendingDownloadDic removeObjectForKey:index];
+    }
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    [downloadQueue cancelAllOperations];
+    for (PhotoModel *photo in photoArray) {
+        photo.currentImageData = nil;
+        photo.currentImageStatus = Empty;
+    }
+    [self.photoCollection reloadData];
+}
 
 @end

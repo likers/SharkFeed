@@ -22,6 +22,7 @@
 		EDA6DE2F1D5BC297002CF962 /* HomeCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EDA6DE2E1D5BC297002CF962 /* HomeCollectionViewCell.m */; };
 		EDA6DE321D5C1327002CF962 /* JLApi.m in Sources */ = {isa = PBXBuildFile; fileRef = EDA6DE311D5C1327002CF962 /* JLApi.m */; };
 		EDA6DE361D5C1F14002CF962 /* PhotoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EDA6DE351D5C1F14002CF962 /* PhotoModel.m */; };
+		EDA6DE3C1D5D248F002CF962 /* ImageDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = EDA6DE3B1D5D248F002CF962 /* ImageDownloadOperation.m */; };
 		EDD9AF7C1D59757D00D8623C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EDD9AF7B1D59757D00D8623C /* main.m */; };
 		EDD9AF7F1D59757D00D8623C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EDD9AF7E1D59757D00D8623C /* AppDelegate.m */; };
 		EDD9AF851D59757D00D8623C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EDD9AF831D59757D00D8623C /* Main.storyboard */; };
@@ -66,6 +67,8 @@
 		EDA6DE311D5C1327002CF962 /* JLApi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JLApi.m; path = Utilities/JLApi.m; sourceTree = "<group>"; };
 		EDA6DE331D5C1EFB002CF962 /* PhotoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PhotoModel.h; path = Models/PhotoModel.h; sourceTree = "<group>"; };
 		EDA6DE351D5C1F14002CF962 /* PhotoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PhotoModel.m; path = Models/PhotoModel.m; sourceTree = "<group>"; };
+		EDA6DE3A1D5D2475002CF962 /* ImageDownloadOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ImageDownloadOperation.h; path = Utilities/ImageDownloadOperation.h; sourceTree = "<group>"; };
+		EDA6DE3B1D5D248F002CF962 /* ImageDownloadOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ImageDownloadOperation.m; path = Utilities/ImageDownloadOperation.m; sourceTree = "<group>"; };
 		EDD9AF771D59757D00D8623C /* SharkFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SharkFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDD9AF7B1D59757D00D8623C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EDD9AF7D1D59757D00D8623C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -137,6 +140,8 @@
 				EDA6DE2B1D5BBADA002CF962 /* Constants.m */,
 				EDA6DE301D5C1319002CF962 /* JLApi.h */,
 				EDA6DE311D5C1327002CF962 /* JLApi.m */,
+				EDA6DE3A1D5D2475002CF962 /* ImageDownloadOperation.h */,
+				EDA6DE3B1D5D248F002CF962 /* ImageDownloadOperation.m */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -243,6 +248,7 @@
 				TargetAttributes = {
 					EDD9AF761D59757D00D8623C = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = MC6MF6E9UT;
 					};
 				};
 			};
@@ -284,6 +290,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EDA6DE261D5A8881002CF962 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
+				EDA6DE3C1D5D248F002CF962 /* ImageDownloadOperation.m in Sources */,
 				EDA6DE241D5A8881002CF962 /* MASViewConstraint.m in Sources */,
 				EDA6DE321D5C1327002CF962 /* JLApi.m in Sources */,
 				EDA6DE1F1D5A8881002CF962 /* MASCompositeConstraint.m in Sources */,
@@ -414,11 +421,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/SharkFeed/SharkFeed-Prefix.pch";
 				INFOPLIST_FILE = SharkFeed/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.likers33.SharkFeed;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -427,11 +437,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/SharkFeed/SharkFeed-Prefix.pch";
 				INFOPLIST_FILE = SharkFeed/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.likers33.SharkFeed;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

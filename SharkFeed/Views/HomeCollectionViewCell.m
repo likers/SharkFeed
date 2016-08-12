@@ -12,7 +12,7 @@
 
 @implementation HomeCollectionViewCell
 
-
+@synthesize imageView;
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -46,22 +46,31 @@
     
     [imageView setImage:[UIImage imageNamed:@"PlaceHolder"]];
     
-    dispatch_queue_t backgroundQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
-    dispatch_async(backgroundQueue, ^(void) {
-        NSURL *url = [NSURL URLWithString:photo.urlCommon];
-        NSURLSessionDataTask *downloadTask = [[NSURLSession sharedSession]
-                                          dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error)
-        {
-            NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
-            if (httpResponse.statusCode == 200) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [imageView setImage:[UIImage imageWithData:data]];
-                });
-            }
-        }];
+    if (photo.currentImageData != nil) {
+        UIImage *toImage = [UIImage imageWithData:photo.currentImageData];
+        [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+            imageView.image = toImage;
+        } completion:nil];
+    }
     
-        [downloadTask resume];
-    });
+//    [imageView setImage:[UIImage imageNamed:@"PlaceHolder"]];
+    
+//    dispatch_queue_t backgroundQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
+//    dispatch_async(backgroundQueue, ^(void) {
+//        NSURL *url = [NSURL URLWithString:photo.urlCommon];
+//        NSURLSessionDataTask *downloadTask = [[NSURLSession sharedSession]
+//                                          dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error)
+//        {
+//            NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
+//            if (httpResponse.statusCode == 200) {
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    [imageView setImage:[UIImage imageWithData:data]];
+//                });
+//            }
+//        }];
+//    
+//        [downloadTask resume];
+//    });
 }
 
 @end

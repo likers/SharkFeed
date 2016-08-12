@@ -12,9 +12,12 @@
 
 @interface HomeCollectionViewController : UIViewController<UICollectionViewDelegate, UICollectionViewDataSource> {
     CGFloat viewMargin;
+    NSOperationQueue *downloadQueue;
+    NSMutableDictionary *pendingDownloadDic;
 }
 
 @property (nonatomic, strong) UICollectionView *photoCollection;
 @property (nonatomic, strong) NSMutableArray *photoArray;
+@property (nonatomic, strong) NSCache *imageCache;
 
 @end

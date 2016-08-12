@@ -10,9 +10,10 @@
 #import "PhotoModel.h"
 
 @interface HomeCollectionViewCell : UICollectionViewCell {
-    UIImageView *imageView;
+//    UIImageView *imageView;
 }
 
 @property (nonatomic, strong) PhotoModel *photo;
+@property (nonatomic, strong) UIImageView *imageView;
 
 @end
