@@ -15,6 +15,7 @@ NSString *const Key = @"949e98778755d1982f537d56236bbb42";
 
 - (void)searchSharkForPage:(NSInteger)page completion:(Complete)compBlock {
     NSString *searchText = @"shark";
+//    NSString *searchText = @"test";
     [self searchWithText:searchText Page:page completion:^(NSData *data, NSInteger code) {
         compBlock(data, code);
     }];

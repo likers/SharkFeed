@@ -29,6 +29,8 @@
 		EDD9AF871D59757D00D8623C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDD9AF861D59757D00D8623C /* Assets.xcassets */; };
 		EDD9AF8A1D59757D00D8623C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EDD9AF881D59757D00D8623C /* LaunchScreen.storyboard */; };
 		EDD9AF961D59816700D8623C /* HomeCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EDD9AF951D59816700D8623C /* HomeCollectionViewController.m */; };
+		EDECDFBE1D5EEA6A0082F99F /* SFPullToRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = EDECDFBD1D5EEA6A0082F99F /* SFPullToRefreshView.m */; };
+		EDECDFC11D5EF3640082F99F /* UIColor+SharkFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = EDECDFC01D5EF3640082F99F /* UIColor+SharkFeed.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -79,6 +81,10 @@
 		EDD9AF8B1D59757D00D8623C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EDD9AF941D59814100D8623C /* HomeCollectionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HomeCollectionViewController.h; path = Controllers/HomeCollectionViewController.h; sourceTree = "<group>"; };
 		EDD9AF951D59816700D8623C /* HomeCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HomeCollectionViewController.m; path = Controllers/HomeCollectionViewController.m; sourceTree = "<group>"; };
+		EDECDFBC1D5EEA510082F99F /* SFPullToRefreshView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SFPullToRefreshView.h; path = Views/SFPullToRefreshView.h; sourceTree = "<group>"; };
+		EDECDFBD1D5EEA6A0082F99F /* SFPullToRefreshView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SFPullToRefreshView.m; path = Views/SFPullToRefreshView.m; sourceTree = "<group>"; };
+		EDECDFBF1D5EF34D0082F99F /* UIColor+SharkFeed.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "UIColor+SharkFeed.h"; path = "Utilities/UIColor+SharkFeed.h"; sourceTree = "<group>"; };
+		EDECDFC01D5EF3640082F99F /* UIColor+SharkFeed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIColor+SharkFeed.m"; path = "Utilities/UIColor+SharkFeed.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +148,8 @@
 				EDA6DE311D5C1327002CF962 /* JLApi.m */,
 				EDA6DE3A1D5D2475002CF962 /* ImageDownloadOperation.h */,
 				EDA6DE3B1D5D248F002CF962 /* ImageDownloadOperation.m */,
+				EDECDFBF1D5EF34D0082F99F /* UIColor+SharkFeed.h */,
+				EDECDFC01D5EF3640082F99F /* UIColor+SharkFeed.m */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -204,6 +212,8 @@
 			children = (
 				EDA6DE2D1D5BC283002CF962 /* HomeCollectionViewCell.h */,
 				EDA6DE2E1D5BC297002CF962 /* HomeCollectionViewCell.m */,
+				EDECDFBC1D5EEA510082F99F /* SFPullToRefreshView.h */,
+				EDECDFBD1D5EEA6A0082F99F /* SFPullToRefreshView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -296,6 +306,7 @@
 				EDA6DE1F1D5A8881002CF962 /* MASCompositeConstraint.m in Sources */,
 				EDA6DE251D5A8881002CF962 /* NSArray+MASAdditions.m in Sources */,
 				EDD9AF961D59816700D8623C /* HomeCollectionViewController.m in Sources */,
+				EDECDFBE1D5EEA6A0082F99F /* SFPullToRefreshView.m in Sources */,
 				EDA6DE2C1D5BBADA002CF962 /* Constants.m in Sources */,
 				EDD9AF7F1D59757D00D8623C /* AppDelegate.m in Sources */,
 				EDA6DE221D5A8881002CF962 /* MASLayoutConstraint.m in Sources */,
@@ -305,6 +316,7 @@
 				EDA6DE361D5C1F14002CF962 /* PhotoModel.m in Sources */,
 				EDA6DE231D5A8881002CF962 /* MASViewAttribute.m in Sources */,
 				EDA6DE201D5A8881002CF962 /* MASConstraint.m in Sources */,
+				EDECDFC11D5EF3640082F99F /* UIColor+SharkFeed.m in Sources */,
 				EDA6DE211D5A8881002CF962 /* MASConstraintMaker.m in Sources */,
 				EDA6DE2F1D5BC297002CF962 /* HomeCollectionViewCell.m in Sources */,
 			);

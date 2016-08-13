@@ -9,6 +9,7 @@
 #import "HomeCollectionViewCell.h"
 #import "JLApi.h"
 #import "PhotoModel.h"
+#import "SFPullToRefreshView.h"
 
 @interface HomeCollectionViewController : UIViewController<UICollectionViewDelegate, UICollectionViewDataSource> {
     CGFloat viewMargin;
@@ -16,6 +17,9 @@
     NSMutableDictionary *pendingDownloadDic;
     NSInteger currentPage;
     BOOL fetching;
+    BOOL isPullToRefreshing;
+    
+    SFPullToRefreshView *refreshView;
 }
 
 @property (nonatomic, strong) UICollectionView *photoCollection;
