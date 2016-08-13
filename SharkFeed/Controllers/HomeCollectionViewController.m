@@ -57,20 +57,48 @@
 }
 
 - (void)initData {
-    JLApi *api = [[JLApi alloc] init];
+//    JLApi *api = [[JLApi alloc] init];
+    currentPage = 1;
+    fetching = NO;
     photoArray = [[NSMutableArray alloc] init];
     imageCache = [[NSCache alloc] init];
     pendingDownloadDic = [[NSMutableDictionary alloc] init];
     downloadQueue = [[NSOperationQueue alloc] init];
     downloadQueue.maxConcurrentOperationCount = 5;
     
-    [api searchSharkForPage:1 completion:^(NSData *data, NSInteger statusCode) {
+    [self getDataForPage:currentPage];
+//    [api searchSharkForPage:1 completion:^(NSData *data, NSInteger statusCode) {
+//        if (statusCode == 200) {
+//            NSError* error;
+//            NSDictionary* result = [NSJSONSerialization JSONObjectWithData:data
+//                                                                 options:kNilOptions
+//                                                                   error:&error];
+//            NSLog(@"total1: %ld", [[[result objectForKey:@"photos"] objectForKey:@"total"] integerValue]);
+//            for (NSDictionary *dic in [[result objectForKey:@"photos"] objectForKey:@"photo"]) {
+//                PhotoModel *photo = [[PhotoModel alloc] init];
+//                [photo setPhotoModelWithDic:dic];
+//                [photoArray addObject:photo];
+//            }
+//            NSLog(@"total2: %lu", (unsigned long)[photoArray count]);
+//            
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                [self initCollectionView];
+//            });
+//        }
+//    }];
+}
+
+- (void)getDataForPage:(NSInteger) page {
+    fetching = YES;
+    JLApi *api = [[JLApi alloc] init];
+    [api searchSharkForPage:page completion:^(NSData *data, NSInteger statusCode) {
         if (statusCode == 200) {
             NSError* error;
             NSDictionary* result = [NSJSONSerialization JSONObjectWithData:data
-                                                                 options:kNilOptions
-                                                                   error:&error];
+                                                                   options:kNilOptions
+                                                                     error:&error];
             NSLog(@"total1: %ld", [[[result objectForKey:@"photos"] objectForKey:@"total"] integerValue]);
+            
             for (NSDictionary *dic in [[result objectForKey:@"photos"] objectForKey:@"photo"]) {
                 PhotoModel *photo = [[PhotoModel alloc] init];
                 [photo setPhotoModelWithDic:dic];
@@ -78,9 +106,16 @@
             }
             NSLog(@"total2: %lu", (unsigned long)[photoArray count]);
             
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self initCollectionView];
-            });
+            if (page == 1) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self initCollectionView];
+                });
+            } else {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.photoCollection reloadData];
+                });
+            }
+            fetching = NO;
         }
     }];
 }
@@ -127,6 +162,13 @@
     return CGSizeMake(cellSize, cellSize);
 }
 
+//- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+//    if ([photoArray count] == currentPage*100 && [photoArray count] - (indexPath.row+1) < 50) {
+//        currentPage += 1;
+//        [self getDataForPage:currentPage];
+//    }
+//}
+
 // MARK: imageDownloader
 - (void)downloadForPhoto:(PhotoModel *)photo Index:(NSIndexPath *)indexPath {
     if (photo.currentImageStatus == Ready || [pendingDownloadDic objectForKey:indexPath] != nil) {
@@ -145,6 +187,10 @@
 }
 
 // MARK: - ScrollView delegate
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+
+}
+
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     if (!decelerate) {
         [self loadImageForOnscreenCells];
@@ -153,6 +199,21 @@
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     [self loadImageForOnscreenCells];
+    
+//    CGFloat actualPosition = self.photoCollection.contentOffset.y;
+//    CGFloat contentHeight = self.photoCollection.contentSize.height - self.photoCollection.frame.size.height;
+//    if (!fetching && actualPosition + 500 >= contentHeight) {
+//        currentPage += 1;
+//        [self getDataForPage:currentPage];
+//    }
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+//    CGFloat actualPosition = self.photoCollection.contentOffset.y;
+//    CGFloat contentHeight = self.photoCollection.contentSize.height - self.photoCollection.frame.size.height;
+//    if (!fetching && actualPosition == contentHeight) {
+//        [self.photoCollection reloadData];
+//    }
 }
 
 - (void)loadImageForOnscreenCells {
@@ -173,9 +234,15 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     [downloadQueue cancelAllOperations];
+    NSInteger counter = 0;
     for (PhotoModel *photo in photoArray) {
-        photo.currentImageData = nil;
-        photo.currentImageStatus = Empty;
+        if (counter < 500) {
+            photo.currentImageData = nil;
+            photo.currentImageStatus = Empty;
+            counter += 1;
+        } else {
+            break;
+        }
     }
     [self.photoCollection reloadData];
 }

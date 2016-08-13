@@ -47,9 +47,11 @@
     [imageView setImage:[UIImage imageNamed:@"PlaceHolder"]];
     
     if (photo.currentImageData != nil) {
+        imageView.alpha = 0.5;
         UIImage *toImage = [UIImage imageWithData:photo.currentImageData];
-        [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+        [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
             imageView.image = toImage;
+            imageView.alpha = 1;
         } completion:nil];
     }
     

@@ -14,6 +14,8 @@
     CGFloat viewMargin;
     NSOperationQueue *downloadQueue;
     NSMutableDictionary *pendingDownloadDic;
+    NSInteger currentPage;
+    BOOL fetching;
 }
 
 @property (nonatomic, strong) UICollectionView *photoCollection;
