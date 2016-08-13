@@ -101,7 +101,9 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
                 }
             } else {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.photoCollection reloadData];
+                    [self resumeScrollViewDown:self.photoCollection completion:^{
+                        [self.photoCollection reloadData];
+                    }];
                 });
             }
             fetching = NO;
@@ -154,13 +156,6 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
     return CGSizeMake(cellSize, cellSize);
 }
 
-//- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
-//    if ([photoArray count] == currentPage*100 && [photoArray count] - (indexPath.row+1) < 50) {
-//        currentPage += 1;
-//        [self getDataForPage:currentPage];
-//    }
-//}
-
 // MARK: imageDownloader
 - (void)downloadForPhoto:(PhotoModel *)photo Index:(NSIndexPath *)indexPath {
     if (photo.currentImageStatus == Ready || [pendingDownloadDic objectForKey:indexPath] != nil) {
@@ -187,15 +182,6 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
     if (!decelerate) {
         [self cancelOffscreenCells];
     }
-    
-//    CGFloat contentOffsetX = scrollView.contentOffset.x;
-//    CGFloat contentOffsetY = scrollView.contentOffset.y;
-//    if (contentOffsetY <= -40) {
-//        refreshView.state = SFPullToRefreshStateTriggered;
-//        [scrollView setContentOffset:CGPointMake(contentOffsetX, -130)];
-//    } else {
-//        refreshView.state = SFPullToRefreshStateStopped;
-//    }
 }
 
 - (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
@@ -213,21 +199,14 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     [self cancelOffscreenCells];
-    
-//    CGFloat actualPosition = self.photoCollection.contentOffset.y;
-//    CGFloat contentHeight = self.photoCollection.contentSize.height - self.photoCollection.frame.size.height;
-//    if (!fetching && actualPosition + 500 >= contentHeight) {
-//        currentPage += 1;
-//        [self getDataForPage:currentPage];
-//    }
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-//    CGFloat actualPosition = self.photoCollection.contentOffset.y;
-//    CGFloat contentHeight = self.photoCollection.contentSize.height - self.photoCollection.frame.size.height;
-//    if (!fetching && actualPosition == contentHeight) {
-//        [self.photoCollection reloadData];
-//    }
+    CGFloat contentOffsetY = scrollView.contentOffset.y;
+    if (!fetching && contentOffsetY+self.photoCollection.frame.size.height == scrollView.contentSize.height) {
+        [self pullScrollViewUp:scrollView completion:^{
+            [self cancelAllDownloads];
+            currentPage += 1;
+            [self getDataForPage:currentPage];
+        }];
+    }
 }
 
 - (void)cancelOffscreenCells {
@@ -276,6 +255,28 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
             complete();
         }];
     });
+}
+
+- (void)pullScrollViewUp:(UIScrollView *)scrollView completion:(void(^)(void))complete {
+    CGFloat contentOffsetX = scrollView.contentOffset.x;
+    CGFloat contentOffsetY = scrollView.contentOffset.y;
+    [scrollView setContentInset:UIEdgeInsetsMake(0, 0, 130, 0)];
+    [UIView animateWithDuration:0.3 animations:^{
+        [scrollView setContentOffset:CGPointMake(contentOffsetX, contentOffsetY+130)];
+    } completion:^(BOOL finished) {
+        complete();
+    }];
+}
+
+- (void)resumeScrollViewDown:(UIScrollView *)scrollView completion:(void(^)(void))complete {
+    CGFloat contentOffsetX = scrollView.contentOffset.x;
+    CGFloat contentOffsetY = scrollView.contentOffset.y;
+    [scrollView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
+    [UIView animateWithDuration:0.3 animations:^{
+        [scrollView setContentOffset:CGPointMake(contentOffsetX, contentOffsetY-130)];
+    } completion:^(BOOL finished) {
+        complete();
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
