@@ -25,31 +25,13 @@
                        @"Release to refresh",
                        @"Loading...",
                        nil];
+        [self initViews];
     }
     
     return self;
 }
 
-//- (void)layoutSubviews {
-//    hookImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 31)];
-//    hookImageView.image = [UIImage imageNamed:@"Hook"];
-//    hookImageView.contentMode = UIViewContentModeScaleAspectFit;
-//    [self addSubview:hookImageView];
-//    
-//    fishImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 31+6, self.frame.size.width, 44)];
-//    fishImageView.image = [UIImage imageNamed:@"Fish"];
-//    fishImageView.contentMode = UIViewContentModeScaleAspectFit;
-//    [self addSubview:fishImageView];
-//    
-//    titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 100, self.frame.size.width, 20)];
-//    titleLabel.text = @"Pull to refresh sharks";
-//    titleLabel.font = [UIFont systemFontOfSize:14];
-//    titleLabel.textColor = [UIColor SFDarkText];
-//    titleLabel.textAlignment = NSTextAlignmentCenter;
-//    [self addSubview:titleLabel];
-//}
-
-- (void)layoutSubviews {
+- (void)initViews {
     hookImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
     hookImageView.image = [UIImage imageNamed:@"Hook"];
     hookImageView.contentMode = UIViewContentModeScaleAspectFit;

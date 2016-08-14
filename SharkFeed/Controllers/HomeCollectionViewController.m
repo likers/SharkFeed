@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "HomeCollectionViewController.h"
 #import "ImageDownloadOperation.h"
+#import "DetailViewController.h"
+
 
 static CGFloat const SFPullToRefreshViewHeight = 130;
 
@@ -30,6 +32,7 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.navigationController.navigationBarHidden = YES;
     [self initNavigationBar];
     [self initData];
 }
@@ -158,6 +161,18 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(nonnull UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(nonnull NSIndexPath *)indexPath {
 //    CGFloat cellSize = (deviceWidth - viewMargin*2 - 6*2)/3;
     return CGSizeMake(cellSize, cellSize);
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    PhotoModel *photo = [photoArray objectAtIndex:indexPath.row];
+    NSString *url = [photo.urlCommon isEqualToString:@""] ? photo.urlOrigin : photo.urlCommon;
+    
+    if ([imageCache objectForKey:url] != nil) {
+        DetailViewController *detailVC = [[DetailViewController alloc] init];
+        detailVC.photo = photo;
+        detailVC.lowResImage = [imageCache objectForKey:url];
+        [self.navigationController pushViewController:detailVC animated:YES];
+    }
 }
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {

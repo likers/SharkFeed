@@ -29,6 +29,10 @@
 		EDD9AF871D59757D00D8623C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDD9AF861D59757D00D8623C /* Assets.xcassets */; };
 		EDD9AF8A1D59757D00D8623C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EDD9AF881D59757D00D8623C /* LaunchScreen.storyboard */; };
 		EDD9AF961D59816700D8623C /* HomeCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EDD9AF951D59816700D8623C /* HomeCollectionViewController.m */; };
+		EDE9CF7E1D6004C0002D44A4 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EDE9CF7D1D6004C0002D44A4 /* DetailViewController.m */; };
+		EDE9CF811D6020C9002D44A4 /* DetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EDE9CF801D6020C9002D44A4 /* DetailModel.m */; };
+		EDE9CF841D603326002D44A4 /* DetailBottomBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = EDE9CF831D603326002D44A4 /* DetailBottomBarView.m */; };
+		EDE9CF871D60575A002D44A4 /* UIButton+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = EDE9CF861D60575A002D44A4 /* UIButton+Extensions.m */; };
 		EDECDFBE1D5EEA6A0082F99F /* SFPullToRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = EDECDFBD1D5EEA6A0082F99F /* SFPullToRefreshView.m */; };
 		EDECDFC11D5EF3640082F99F /* UIColor+SharkFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = EDECDFC01D5EF3640082F99F /* UIColor+SharkFeed.m */; };
 /* End PBXBuildFile section */
@@ -81,6 +85,14 @@
 		EDD9AF8B1D59757D00D8623C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EDD9AF941D59814100D8623C /* HomeCollectionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HomeCollectionViewController.h; path = Controllers/HomeCollectionViewController.h; sourceTree = "<group>"; };
 		EDD9AF951D59816700D8623C /* HomeCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HomeCollectionViewController.m; path = Controllers/HomeCollectionViewController.m; sourceTree = "<group>"; };
+		EDE9CF7C1D6004A9002D44A4 /* DetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = DetailViewController.h; path = Controllers/DetailViewController.h; sourceTree = "<group>"; };
+		EDE9CF7D1D6004C0002D44A4 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailViewController.m; path = Controllers/DetailViewController.m; sourceTree = "<group>"; };
+		EDE9CF7F1D6020B3002D44A4 /* DetailModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = DetailModel.h; path = Models/DetailModel.h; sourceTree = "<group>"; };
+		EDE9CF801D6020C9002D44A4 /* DetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailModel.m; path = Models/DetailModel.m; sourceTree = "<group>"; };
+		EDE9CF821D6032BF002D44A4 /* DetailBottomBarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = DetailBottomBarView.h; path = Views/DetailBottomBarView.h; sourceTree = "<group>"; };
+		EDE9CF831D603326002D44A4 /* DetailBottomBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailBottomBarView.m; path = Views/DetailBottomBarView.m; sourceTree = "<group>"; };
+		EDE9CF851D60575A002D44A4 /* UIButton+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIButton+Extensions.h"; path = "Utilities/UIButton+Extensions.h"; sourceTree = "<group>"; };
+		EDE9CF861D60575A002D44A4 /* UIButton+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIButton+Extensions.m"; path = "Utilities/UIButton+Extensions.m"; sourceTree = "<group>"; };
 		EDECDFBC1D5EEA510082F99F /* SFPullToRefreshView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SFPullToRefreshView.h; path = Views/SFPullToRefreshView.h; sourceTree = "<group>"; };
 		EDECDFBD1D5EEA6A0082F99F /* SFPullToRefreshView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SFPullToRefreshView.m; path = Views/SFPullToRefreshView.m; sourceTree = "<group>"; };
 		EDECDFBF1D5EF34D0082F99F /* UIColor+SharkFeed.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "UIColor+SharkFeed.h"; path = "Utilities/UIColor+SharkFeed.h"; sourceTree = "<group>"; };
@@ -142,6 +154,8 @@
 		EDA6DE291D5BB616002CF962 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				EDE9CF851D60575A002D44A4 /* UIButton+Extensions.h */,
+				EDE9CF861D60575A002D44A4 /* UIButton+Extensions.m */,
 				EDA6DE2A1D5BB683002CF962 /* Constants.h */,
 				EDA6DE2B1D5BBADA002CF962 /* Constants.m */,
 				EDA6DE301D5C1319002CF962 /* JLApi.h */,
@@ -203,6 +217,8 @@
 			children = (
 				EDA6DE331D5C1EFB002CF962 /* PhotoModel.h */,
 				EDA6DE351D5C1F14002CF962 /* PhotoModel.m */,
+				EDE9CF7F1D6020B3002D44A4 /* DetailModel.h */,
+				EDE9CF801D6020C9002D44A4 /* DetailModel.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -214,6 +230,8 @@
 				EDA6DE2E1D5BC297002CF962 /* HomeCollectionViewCell.m */,
 				EDECDFBC1D5EEA510082F99F /* SFPullToRefreshView.h */,
 				EDECDFBD1D5EEA6A0082F99F /* SFPullToRefreshView.m */,
+				EDE9CF821D6032BF002D44A4 /* DetailBottomBarView.h */,
+				EDE9CF831D603326002D44A4 /* DetailBottomBarView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -223,6 +241,8 @@
 			children = (
 				EDD9AF941D59814100D8623C /* HomeCollectionViewController.h */,
 				EDD9AF951D59816700D8623C /* HomeCollectionViewController.m */,
+				EDE9CF7C1D6004A9002D44A4 /* DetailViewController.h */,
+				EDE9CF7D1D6004C0002D44A4 /* DetailViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -301,6 +321,7 @@
 			files = (
 				EDA6DE261D5A8881002CF962 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
 				EDA6DE3C1D5D248F002CF962 /* ImageDownloadOperation.m in Sources */,
+				EDE9CF811D6020C9002D44A4 /* DetailModel.m in Sources */,
 				EDA6DE241D5A8881002CF962 /* MASViewConstraint.m in Sources */,
 				EDA6DE321D5C1327002CF962 /* JLApi.m in Sources */,
 				EDA6DE1F1D5A8881002CF962 /* MASCompositeConstraint.m in Sources */,
@@ -311,6 +332,7 @@
 				EDD9AF7F1D59757D00D8623C /* AppDelegate.m in Sources */,
 				EDA6DE221D5A8881002CF962 /* MASLayoutConstraint.m in Sources */,
 				EDD9AF7C1D59757D00D8623C /* main.m in Sources */,
+				EDE9CF871D60575A002D44A4 /* UIButton+Extensions.m in Sources */,
 				EDA6DE281D5A8881002CF962 /* ViewController+MASAdditions.m in Sources */,
 				EDA6DE271D5A8881002CF962 /* View+MASAdditions.m in Sources */,
 				EDA6DE361D5C1F14002CF962 /* PhotoModel.m in Sources */,
@@ -318,7 +340,9 @@
 				EDA6DE201D5A8881002CF962 /* MASConstraint.m in Sources */,
 				EDECDFC11D5EF3640082F99F /* UIColor+SharkFeed.m in Sources */,
 				EDA6DE211D5A8881002CF962 /* MASConstraintMaker.m in Sources */,
+				EDE9CF841D603326002D44A4 /* DetailBottomBarView.m in Sources */,
 				EDA6DE2F1D5BC297002CF962 /* HomeCollectionViewCell.m in Sources */,
+				EDE9CF7E1D6004C0002D44A4 /* DetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

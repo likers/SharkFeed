@@ -37,4 +37,34 @@ NSString *const Key = @"949e98778755d1982f537d56236bbb42";
     [downloadTask resume];
 }
 
+- (void)getPhotoDetail:(NSString *)photoid completion:(Complete) compBlock {
+    NSString *detailUrl =[NSString stringWithFormat:@"https://api.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=%@&photo_id=%@&format=json&nojsoncallback=1", Key, photoid];
+    NSURL *url = [NSURL URLWithString:detailUrl];
+    
+    NSURLSessionDataTask *downloadTask = [[NSURLSession sharedSession]
+                                          dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error)
+                                          {
+                                              NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
+                                              if (httpResponse.statusCode == 200) {
+                                                  compBlock(data, httpResponse.statusCode);
+                                              }
+                                          }];
+    
+    [downloadTask resume];
+}
+
+- (void)downloadImage:(NSString *)imageurl completion:(Complete) compBlock {
+    NSURL *url = [NSURL URLWithString:imageurl];
+    NSURLSessionDataTask *downloadTask = [[NSURLSession sharedSession]
+                                          dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error)
+                                          {
+                                              NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
+                                              if (httpResponse.statusCode == 200) {
+                                                  compBlock(data, httpResponse.statusCode);
+                                              }
+                                          }];
+    
+    [downloadTask resume];
+}
+
 @end
