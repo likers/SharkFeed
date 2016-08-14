@@ -13,6 +13,7 @@
 
 @interface HomeCollectionViewController : UIViewController<UICollectionViewDelegate, UICollectionViewDataSource> {
     CGFloat viewMargin;
+    CGFloat cellSize;
     NSOperationQueue *downloadQueue;
     NSMutableDictionary *pendingDownloadDic;
     NSInteger currentPage;

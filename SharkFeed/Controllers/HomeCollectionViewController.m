@@ -58,6 +58,7 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
 - (void)initData {
     currentPage = 1;
     viewMargin = 21;
+    cellSize = (deviceWidth - viewMargin*2 - 6*2)/3;
     isLoadingMore = NO;
     photoArray = [[NSMutableArray alloc] init];
     imageCache = [[NSCache alloc] init];
@@ -155,7 +156,7 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(nonnull UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    CGFloat cellSize = (deviceWidth - viewMargin*2 - 6*2)/3;
+//    CGFloat cellSize = (deviceWidth - viewMargin*2 - 6*2)/3;
     return CGSizeMake(cellSize, cellSize);
 }
 
