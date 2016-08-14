@@ -159,7 +159,6 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(nonnull UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(nonnull NSIndexPath *)indexPath {
-//    CGFloat cellSize = (deviceWidth - viewMargin*2 - 6*2)/3;
     return CGSizeMake(cellSize, cellSize);
 }
 
@@ -202,15 +201,6 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
 }
 
 // MARK: - ScrollView delegate
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-
-}
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-    if (!decelerate) {
-        [self cancelOffscreenCells];
-    }
-}
 
 - (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
     CGFloat contentOffsetY = scrollView.contentOffset.y;

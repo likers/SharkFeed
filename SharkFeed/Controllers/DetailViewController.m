@@ -67,7 +67,9 @@
 }
 
 - (void)initPhotoView {
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnImage)];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnImage:)];
+//    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
+//    [doubleTap setNumberOfTapsRequired:2];
     photoView = [[UIImageView alloc] initWithImage:self.lowResImage];
     photoView.contentMode = UIViewContentModeScaleAspectFit;
     photoView.userInteractionEnabled = YES;
@@ -78,7 +80,7 @@
     }];
 }
 
-- (void)tapOnImage {
+- (void)tapOnImage:(UIGestureRecognizer *)gestureRecognizer {
     [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         topBarBackground.alpha = infoHidden;
         bottomBar.alpha = infoHidden;
