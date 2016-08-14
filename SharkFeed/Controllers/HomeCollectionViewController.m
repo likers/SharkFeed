@@ -58,7 +58,7 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
 - (void)initData {
     currentPage = 1;
     viewMargin = 21;
-    fetching = NO;
+    isLoadingMore = NO;
     photoArray = [[NSMutableArray alloc] init];
     imageCache = [[NSCache alloc] init];
     pendingDownloadDic = [[NSMutableDictionary alloc] init];
@@ -69,7 +69,6 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
 }
 
 - (void)getDataForPage:(NSInteger) page isRefresh:(BOOL) isPullToRefresh{
-    fetching = YES;
     JLApi *api = [[JLApi alloc] init];
     [api searchSharkForPage:page completion:^(NSData *data, NSInteger statusCode) {
         if (statusCode == 200) {
@@ -102,13 +101,14 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
                     });
                 }
             } else {
+                isLoadingMore = NO;
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self resumeScrollViewDown:self.photoCollection completion:^{
-                        [self.photoCollection reloadData];
-                    }];
+//                    [self resumeScrollViewDown:self.photoCollection completion:^{
+//                        [self.photoCollection reloadData];
+//                    }];
+                    [self.photoCollection reloadData];
                 });
             }
-            fetching = NO;
         }
     }];
 }
@@ -162,6 +162,15 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
     return CGSizeMake(cellSize, cellSize);
 }
 
+- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+    if (!isLoadingMore && [photoArray count] - (indexPath.row+1) < 50) {
+        currentPage += 1;
+        isLoadingMore = YES;
+        [self cancelAllDownloads];
+        [self getDataForPage:currentPage isRefresh:NO];
+    }
+}
+
 // MARK: imageDownloader
 - (void)downloadForUrl:(NSString *)url Index:(NSIndexPath *)indexPath {
     if ([pendingDownloadDic objectForKey:indexPath] != nil) {
@@ -203,8 +212,9 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     [self cancelOffscreenCells];
+    
 //    CGFloat contentOffsetY = scrollView.contentOffset.y;
-//    if (!fetching && contentOffsetY+self.photoCollection.frame.size.height == scrollView.contentSize.height) {
+//    if (!isLoadingMore && contentOffsetY+self.photoCollection.frame.size.height == scrollView.contentSize.height) {
 //        [self pullScrollViewUp:scrollView completion:^{
 //            [self cancelAllDownloads];
 //            currentPage += 1;
@@ -259,27 +269,29 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
     });
 }
 
-- (void)pullScrollViewUp:(UIScrollView *)scrollView completion:(void(^)(void))complete {
-    CGFloat contentOffsetX = scrollView.contentOffset.x;
-    CGFloat contentOffsetY = scrollView.contentOffset.y;
-    [scrollView setContentInset:UIEdgeInsetsMake(0, 0, 130, 0)];
-    [UIView animateWithDuration:0.3 animations:^{
-        [scrollView setContentOffset:CGPointMake(contentOffsetX, contentOffsetY+130)];
-    } completion:^(BOOL finished) {
-        complete();
-    }];
-}
-
-- (void)resumeScrollViewDown:(UIScrollView *)scrollView completion:(void(^)(void))complete {
-    CGFloat contentOffsetX = scrollView.contentOffset.x;
-    CGFloat contentOffsetY = scrollView.contentOffset.y;
-    [scrollView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
-    [UIView animateWithDuration:0.3 animations:^{
-        [scrollView setContentOffset:CGPointMake(contentOffsetX, contentOffsetY-130)];
-    } completion:^(BOOL finished) {
-        complete();
-    }];
-}
+//- (void)pullScrollViewUp:(UIScrollView *)scrollView completion:(void(^)(void))complete {
+//    isLoadingMore = YES;
+//    CGFloat contentOffsetX = scrollView.contentOffset.x;
+//    CGFloat contentOffsetY = scrollView.contentOffset.y;
+//    [scrollView setContentInset:UIEdgeInsetsMake(0, 0, 130, 0)];
+//    [UIView animateWithDuration:0.3 animations:^{
+//        [scrollView setContentOffset:CGPointMake(contentOffsetX, contentOffsetY+130)];
+//    } completion:^(BOOL finished) {
+//        complete();
+//    }];
+//}
+//
+//- (void)resumeScrollViewDown:(UIScrollView *)scrollView completion:(void(^)(void))complete {
+//    isLoadingMore = NO;
+//    CGFloat contentOffsetX = scrollView.contentOffset.x;
+//    CGFloat contentOffsetY = scrollView.contentOffset.y;
+//    [scrollView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
+//    [UIView animateWithDuration:0.3 animations:^{
+//        [scrollView setContentOffset:CGPointMake(contentOffsetX, contentOffsetY-130)];
+//    } completion:^(BOOL finished) {
+//        complete();
+//    }];
+//}
 
 //- (void)didReceiveMemoryWarning {
 //    [super didReceiveMemoryWarning];
