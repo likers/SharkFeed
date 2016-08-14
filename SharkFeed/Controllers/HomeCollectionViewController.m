@@ -59,27 +59,27 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
     currentPage = 1;
     viewMargin = 21;
     fetching = NO;
-    isPullToRefreshing = NO;
     photoArray = [[NSMutableArray alloc] init];
     imageCache = [[NSCache alloc] init];
     pendingDownloadDic = [[NSMutableDictionary alloc] init];
     downloadQueue = [[NSOperationQueue alloc] init];
     downloadQueue.maxConcurrentOperationCount = 5;
     
-    [self getDataForPage:currentPage];
+    [self getDataForPage:currentPage isRefresh:NO];
 }
 
-- (void)getDataForPage:(NSInteger) page {
+- (void)getDataForPage:(NSInteger) page isRefresh:(BOOL) isPullToRefresh{
     fetching = YES;
     JLApi *api = [[JLApi alloc] init];
     [api searchSharkForPage:page completion:^(NSData *data, NSInteger statusCode) {
         if (statusCode == 200) {
+            [self cancelAllDownloads];
             NSError* error;
             NSDictionary* result = [NSJSONSerialization JSONObjectWithData:data
                                                                    options:kNilOptions
                                                                      error:&error];
             NSLog(@"total1: %ld", [[[result objectForKey:@"photos"] objectForKey:@"total"] integerValue]);
-            if (isPullToRefreshing) {
+            if (isPullToRefresh) {
                 [photoArray removeAllObjects];
             }
             for (NSDictionary *dic in [[result objectForKey:@"photos"] objectForKey:@"photo"]) {
@@ -90,14 +90,16 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
             NSLog(@"total2: %lu", (unsigned long)[photoArray count]);
             
             if (page == 1) {
-                if (!isPullToRefreshing) {
+                if (!isPullToRefresh) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [self initCollectionView];
                     });
-                } else if (isPullToRefreshing) {
-                    [self resumeScrollViewUp:self.photoCollection completion:^{
-                        [self.photoCollection reloadData];
-                    }];
+                } else if (isPullToRefresh) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self resumeScrollViewUp:self.photoCollection completion:^{
+                            [self.photoCollection reloadData];
+                        }];
+                    });
                 }
             } else {
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -139,13 +141,17 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-//    NSLog(@"%ld", (long)indexPath.row);
     PhotoModel *photo = [photoArray objectAtIndex:indexPath.row];
+    NSString *url = [photo.urlCommon isEqualToString:@""] ? photo.urlOrigin : photo.urlCommon;
+    
     HomeCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cellIdentifier" forIndexPath:indexPath];
     cell.imageView.image = nil;
-    cell.photo = photo;
-    if (photo.currentImageStatus == Empty) {
-        [self downloadForPhoto:photoArray[indexPath.row] Index:indexPath];
+    
+    if ([self.imageCache objectForKey:url] != nil) {
+        cell.imageView.image = [self.imageCache objectForKey:url];
+    } else {
+        cell.imageView.image = [UIImage imageNamed:@"PlaceHolder"];
+        [self downloadForUrl:url Index:indexPath];
     }
     
     return cell;
@@ -157,11 +163,11 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
 }
 
 // MARK: imageDownloader
-- (void)downloadForPhoto:(PhotoModel *)photo Index:(NSIndexPath *)indexPath {
-    if (photo.currentImageStatus == Ready || [pendingDownloadDic objectForKey:indexPath] != nil) {
+- (void)downloadForUrl:(NSString *)url Index:(NSIndexPath *)indexPath {
+    if ([pendingDownloadDic objectForKey:indexPath] != nil) {
         return;
     } else {
-        ImageDownloadOperation *downloader = [[ImageDownloadOperation alloc] initWithPhoto:photo];
+        ImageDownloadOperation *downloader = [[ImageDownloadOperation alloc] initWithUrl:url Cache:self.imageCache];
         downloader.completionBlock = ^{
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                 [pendingDownloadDic removeObjectForKey:indexPath];
@@ -186,27 +192,25 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
 
 - (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
     CGFloat contentOffsetY = scrollView.contentOffset.y;
-    if (contentOffsetY <= -60) {
+    if (contentOffsetY <= -60 && refreshView.state == SFPullToRefreshStateStopped) {
         [self pullScrollViewDown:scrollView completion:^{
+            refreshView.state = SFPullToRefreshStateLoading;
             [self cancelAllDownloads];
-            [self getDataForPage:1];
+            [self getDataForPage:1 isRefresh:YES];
         }];
-    } else {
-        refreshView.state = SFPullToRefreshStateStopped;
-        isPullToRefreshing = NO;
     }
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     [self cancelOffscreenCells];
-    CGFloat contentOffsetY = scrollView.contentOffset.y;
-    if (!fetching && contentOffsetY+self.photoCollection.frame.size.height == scrollView.contentSize.height) {
-        [self pullScrollViewUp:scrollView completion:^{
-            [self cancelAllDownloads];
-            currentPage += 1;
-            [self getDataForPage:currentPage];
-        }];
-    }
+//    CGFloat contentOffsetY = scrollView.contentOffset.y;
+//    if (!fetching && contentOffsetY+self.photoCollection.frame.size.height == scrollView.contentSize.height) {
+//        [self pullScrollViewUp:scrollView completion:^{
+//            [self cancelAllDownloads];
+//            currentPage += 1;
+//            [self getDataForPage:currentPage isRefresh:NO];
+//        }];
+//    }
 }
 
 - (void)cancelOffscreenCells {
@@ -234,7 +238,6 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
 - (void)pullScrollViewDown:(UIScrollView *)scrollView completion:(void(^)(void))complete {
     CGFloat contentOffsetX = scrollView.contentOffset.x;
     refreshView.state = SFPullToRefreshStateTriggered;
-    isPullToRefreshing = YES;
     [scrollView setContentInset:UIEdgeInsetsMake(130, 0, 0, 0)];
     [UIView animateWithDuration:0.3 animations:^{
         [scrollView setContentOffset:CGPointMake(contentOffsetX, -130)];
@@ -245,7 +248,6 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
 
 - (void)resumeScrollViewUp:(UIScrollView *)scrollView completion:(void(^)(void))complete {
     refreshView.state = SFPullToRefreshStateStopped;
-    isPullToRefreshing = NO;
     dispatch_async(dispatch_get_main_queue(), ^{
         CGFloat contentOffsetX = self.photoCollection.contentOffset.x;
         [UIView animateWithDuration:0.3 animations:^{
@@ -279,20 +281,20 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
     }];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    [downloadQueue cancelAllOperations];
-    NSInteger counter = 0;
-    for (PhotoModel *photo in photoArray) {
-        if (counter < 500) {
-            photo.currentImageData = nil;
-            photo.currentImageStatus = Empty;
-            counter += 1;
-        } else {
-            break;
-        }
-    }
-    [self.photoCollection reloadData];
-}
+//- (void)didReceiveMemoryWarning {
+//    [super didReceiveMemoryWarning];
+//    [downloadQueue cancelAllOperations];
+//    NSInteger counter = 0;
+//    for (PhotoModel *photo in photoArray) {
+//        if (counter < 500) {
+//            photo.currentImageData = nil;
+//            photo.currentImageStatus = Empty;
+//            counter += 1;
+//        } else {
+//            break;
+//        }
+//    }
+//    [self.photoCollection reloadData];
+//}
 
 @end

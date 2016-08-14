@@ -8,8 +8,10 @@
 
 #import "PhotoModel.h"
 
-@interface ImageDownloadOperation : NSOperation
+@interface ImageDownloadOperation : NSOperation {
+    NSString *imageUrl;
+}
 
--(id)initWithPhoto:(PhotoModel *)photo;
+-(id)initWithUrl:(NSString *)url Cache:(NSCache *)cache;
 
 @end

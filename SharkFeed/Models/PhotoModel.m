@@ -18,7 +18,6 @@
 @synthesize urlCommon, heightCommon, widthCommon;
 @synthesize urlLarge, heightLarge, widthLarge;
 @synthesize urlOrigin, heightOrigin, widthOrigin;
-@synthesize currentImageData, currentImageStatus;
 
 - (instancetype)init {
     self = [super init];
@@ -49,9 +48,6 @@
         self.urlOrigin = @"";
         self.heightOrigin = 0;
         self.widthOrigin = 0;
-        
-        self.currentImageData = nil;
-        self.currentImageStatus = Empty;
     }
     
     return self;

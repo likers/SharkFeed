@@ -42,9 +42,6 @@ typedef NS_ENUM(NSUInteger, ImageStatus) {
 @property (nonatomic, assign) NSInteger heightOrigin;
 @property (nonatomic, assign) NSInteger widthOrigin;
 
-@property (nonatomic, strong) NSData *currentImageData;
-@property (nonatomic, assign) ImageStatus currentImageStatus;
-
 - (void)setPhotoModelWithDic:(NSDictionary *)dic;
 
 @end

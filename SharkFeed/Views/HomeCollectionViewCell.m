@@ -41,38 +41,4 @@
     }];
 }
 
-- (void)setPhoto:(PhotoModel *)photo {
-    _photo = photo;
-    
-    [imageView setImage:[UIImage imageNamed:@"PlaceHolder"]];
-    
-    if (photo.currentImageData != nil) {
-        imageView.alpha = 0.5;
-        UIImage *toImage = [UIImage imageWithData:photo.currentImageData];
-        [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            imageView.image = toImage;
-            imageView.alpha = 1;
-        } completion:nil];
-    }
-    
-//    [imageView setImage:[UIImage imageNamed:@"PlaceHolder"]];
-    
-//    dispatch_queue_t backgroundQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
-//    dispatch_async(backgroundQueue, ^(void) {
-//        NSURL *url = [NSURL URLWithString:photo.urlCommon];
-//        NSURLSessionDataTask *downloadTask = [[NSURLSession sharedSession]
-//                                          dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error)
-//        {
-//            NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
-//            if (httpResponse.statusCode == 200) {
-//                dispatch_async(dispatch_get_main_queue(), ^{
-//                    [imageView setImage:[UIImage imageWithData:data]];
-//                });
-//            }
-//        }];
-//    
-//        [downloadTask resume];
-//    });
-}
-
 @end

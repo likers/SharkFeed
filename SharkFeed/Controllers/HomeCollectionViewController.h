@@ -17,7 +17,6 @@
     NSMutableDictionary *pendingDownloadDic;
     NSInteger currentPage;
     BOOL fetching;
-    BOOL isPullToRefreshing;
     
     SFPullToRefreshView *refreshView;
 }

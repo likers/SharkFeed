@@ -9,21 +9,21 @@
 #import <Foundation/Foundation.h>
 #import "ImageDownloadOperation.h"
 
-@interface ImageDownloadOperation () {
-    PhotoModel *mPhoto;
-}
+@interface ImageDownloadOperation ()
 
-@property (nonatomic, strong) PhotoModel *mPhoto;
+@property (nonatomic, weak) NSCache *mCache;
 
 @end
 
 @implementation ImageDownloadOperation
 
-@synthesize mPhoto;
+@synthesize mCache;
 
--(id)initWithPhoto:(PhotoModel *)photo {
+
+-(id)initWithUrl:(NSString *)url Cache:(NSCache *)cache {
     if (self = [super init]) {
-        self.mPhoto = photo;
+        self.mCache = cache;
+        imageUrl = url;
     }
     return self;
 }
@@ -32,18 +32,17 @@
     if (self.cancelled) {
         return;
     }
-    NSURL *url = [self.mPhoto.urlCommon isEqualToString:@""] ? [NSURL URLWithString:self.mPhoto.urlOrigin] : [NSURL URLWithString:self.mPhoto.urlCommon];
+    NSURL *url = [NSURL URLWithString:imageUrl];
     NSData *data = [NSData dataWithContentsOfURL:url];
     
     if (self.cancelled) {
         return;
     }
     if ([data length] > 0) {
-        self.mPhoto.currentImageData = data;
-        self.mPhoto.currentImageStatus = Ready;
+        UIImage *image = [UIImage imageWithData:data];
+        [self.mCache setObject:image forKey:imageUrl];
     } else {
-        self.mPhoto.currentImageData = nil;
-        self.mPhoto.currentImageStatus = Failed;
+        
     }
 }
 
