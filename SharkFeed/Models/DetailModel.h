@@ -15,6 +15,7 @@
 @property (nonatomic, copy) NSString *photoTitle;
 @property (nonatomic, copy) NSString *photoDescription;
 @property (nonatomic, copy) UIImage *highResImage;
+@property (nonatomic, copy) NSString *userIconUrl;
 
 - (void)setDetailModelWithDic:(NSDictionary *)dic;
 

@@ -24,6 +24,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
     highResImage = nil;
+    infoHidden = NO;
     [self initPhotoView];
     [self initTopBar];
     [self initBottomBar];
@@ -47,6 +48,7 @@
             [detail setDetailModelWithDic:[result objectForKey:@"photo"]];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [bottomBar updateDescription:[detail.photoDescription isEqualToString:@""] ? detail.photoTitle : detail.photoDescription];
+                [self addIconAndUserName];
             });
         }
     }];
@@ -65,11 +67,23 @@
 }
 
 - (void)initPhotoView {
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnImage)];
     photoView = [[UIImageView alloc] initWithImage:self.lowResImage];
     photoView.contentMode = UIViewContentModeScaleAspectFit;
+    photoView.userInteractionEnabled = YES;
+    [photoView addGestureRecognizer:tap];
     [self.view addSubview:photoView];
     [photoView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
+    }];
+}
+
+- (void)tapOnImage {
+    [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        topBarBackground.alpha = infoHidden;
+        bottomBar.alpha = infoHidden;
+    } completion:^(BOOL finished) {
+        infoHidden = !infoHidden;
     }];
 }
 
@@ -94,6 +108,38 @@
         make.height.equalTo(@22);
         make.width.equalTo(@22);
     }];
+}
+
+- (void)addIconAndUserName {
+    NSInteger hasIcon = 0;
+    NSData *iconData = [NSData dataWithContentsOfURL:[NSURL URLWithString:detail.userIconUrl]];
+    if (iconData != nil) {
+        hasIcon = 1;
+        iconView = [[UIImageView alloc] init];
+        iconView.image = [UIImage imageWithData:iconData];
+        iconView.layer.cornerRadius = 15;
+        iconView.clipsToBounds = YES;
+        [topBarBackground addSubview:iconView];
+        [iconView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(topBarBackground).offset(12);
+            make.left.equalTo(topBarBackground).offset(16);
+            make.bottom.equalTo(topBarBackground).offset(-2);
+            make.width.equalTo(@30);
+            make.height.equalTo(@30);
+        }];
+    }
+    
+    userNameLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    userNameLabel.text = detail.userName;
+    userNameLabel.textColor = [UIColor whiteColor];
+    userNameLabel.font = [UIFont boldSystemFontOfSize:16];
+    [topBarBackground addSubview:userNameLabel];
+    [userNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(topBarBackground).offset(16);
+        make.left.equalTo(topBarBackground).offset(16+hasIcon*40);
+        make.height.equalTo(@20);
+    }];
+    [userNameLabel sizeToFit];
 }
 
 - (void)backAction {
@@ -130,7 +176,9 @@
 }
 
 - (void)didClickOpenInFlickr {
-    
+    UIApplication *application = [UIApplication sharedApplication];
+    NSString *url = [NSString stringWithFormat:@"flickr://photos/%@/%@", detail.userName, detail.photoId];
+    [application openURL:[NSURL URLWithString:url]];
 }
 
 @end

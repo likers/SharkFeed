@@ -17,6 +17,10 @@
     DetailModel *detail;
     UIImageView *photoView;
     UIImage *highResImage;
+    UILabel *userNameLabel;
+    UILabel *geoLabel;
+    UIImageView *iconView;
+    BOOL infoHidden;
 }
 
 @property (nonatomic, strong) PhotoModel *photo;
