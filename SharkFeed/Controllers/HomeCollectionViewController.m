@@ -191,8 +191,17 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
         ImageDownloadOperation *downloader = [[ImageDownloadOperation alloc] initWithUrl:url Cache:self.imageCache];
         downloader.completionBlock = ^{
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                [pendingDownloadDic removeObjectForKey:indexPath];
-                [self.photoCollection reloadItemsAtIndexPaths:@[indexPath]];
+                @try
+                {
+                    [pendingDownloadDic removeObjectForKey:indexPath];
+                    if (!isLoadingMore && refreshView.state == SFPullToRefreshStateStopped) {
+                        [self.photoCollection reloadItemsAtIndexPaths:@[indexPath]];
+                    }
+                }
+                @catch (NSException *except)
+                {
+                    NSLog(@"DEBUG: failure to insertItemsAtIndexPaths.  %@", except.description);
+                }
             }];
         };
         [pendingDownloadDic setObject:downloader forKey:indexPath];
