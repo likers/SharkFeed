@@ -103,9 +103,6 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
             } else {
                 isLoadingMore = NO;
                 dispatch_async(dispatch_get_main_queue(), ^{
-//                    [self resumeScrollViewDown:self.photoCollection completion:^{
-//                        [self.photoCollection reloadData];
-//                    }];
                     [self.photoCollection reloadData];
                 });
             }
@@ -212,15 +209,6 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     [self cancelOffscreenCells];
-    
-//    CGFloat contentOffsetY = scrollView.contentOffset.y;
-//    if (!isLoadingMore && contentOffsetY+self.photoCollection.frame.size.height == scrollView.contentSize.height) {
-//        [self pullScrollViewUp:scrollView completion:^{
-//            [self cancelAllDownloads];
-//            currentPage += 1;
-//            [self getDataForPage:currentPage isRefresh:NO];
-//        }];
-//    }
 }
 
 - (void)cancelOffscreenCells {
@@ -268,45 +256,5 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
         }];
     });
 }
-
-//- (void)pullScrollViewUp:(UIScrollView *)scrollView completion:(void(^)(void))complete {
-//    isLoadingMore = YES;
-//    CGFloat contentOffsetX = scrollView.contentOffset.x;
-//    CGFloat contentOffsetY = scrollView.contentOffset.y;
-//    [scrollView setContentInset:UIEdgeInsetsMake(0, 0, 130, 0)];
-//    [UIView animateWithDuration:0.3 animations:^{
-//        [scrollView setContentOffset:CGPointMake(contentOffsetX, contentOffsetY+130)];
-//    } completion:^(BOOL finished) {
-//        complete();
-//    }];
-//}
-//
-//- (void)resumeScrollViewDown:(UIScrollView *)scrollView completion:(void(^)(void))complete {
-//    isLoadingMore = NO;
-//    CGFloat contentOffsetX = scrollView.contentOffset.x;
-//    CGFloat contentOffsetY = scrollView.contentOffset.y;
-//    [scrollView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
-//    [UIView animateWithDuration:0.3 animations:^{
-//        [scrollView setContentOffset:CGPointMake(contentOffsetX, contentOffsetY-130)];
-//    } completion:^(BOOL finished) {
-//        complete();
-//    }];
-//}
-
-//- (void)didReceiveMemoryWarning {
-//    [super didReceiveMemoryWarning];
-//    [downloadQueue cancelAllOperations];
-//    NSInteger counter = 0;
-//    for (PhotoModel *photo in photoArray) {
-//        if (counter < 500) {
-//            photo.currentImageData = nil;
-//            photo.currentImageStatus = Empty;
-//            counter += 1;
-//        } else {
-//            break;
-//        }
-//    }
-//    [self.photoCollection reloadData];
-//}
 
 @end
