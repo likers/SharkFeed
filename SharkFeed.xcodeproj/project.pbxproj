@@ -33,6 +33,8 @@
 		EDE9CF811D6020C9002D44A4 /* DetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EDE9CF801D6020C9002D44A4 /* DetailModel.m */; };
 		EDE9CF841D603326002D44A4 /* DetailBottomBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = EDE9CF831D603326002D44A4 /* DetailBottomBarView.m */; };
 		EDE9CF871D60575A002D44A4 /* UIButton+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = EDE9CF861D60575A002D44A4 /* UIButton+Extensions.m */; };
+		EDE9CF8B1D60DD3D002D44A4 /* OpenAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = EDE9CF8A1D60DD3D002D44A4 /* OpenAnimator.m */; };
+		EDE9CF8F1D60EB13002D44A4 /* UIView+Snapshooting.m in Sources */ = {isa = PBXBuildFile; fileRef = EDE9CF8E1D60EB13002D44A4 /* UIView+Snapshooting.m */; };
 		EDECDFBE1D5EEA6A0082F99F /* SFPullToRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = EDECDFBD1D5EEA6A0082F99F /* SFPullToRefreshView.m */; };
 		EDECDFC11D5EF3640082F99F /* UIColor+SharkFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = EDECDFC01D5EF3640082F99F /* UIColor+SharkFeed.m */; };
 /* End PBXBuildFile section */
@@ -93,6 +95,11 @@
 		EDE9CF831D603326002D44A4 /* DetailBottomBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailBottomBarView.m; path = Views/DetailBottomBarView.m; sourceTree = "<group>"; };
 		EDE9CF851D60575A002D44A4 /* UIButton+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIButton+Extensions.h"; path = "Utilities/UIButton+Extensions.h"; sourceTree = "<group>"; };
 		EDE9CF861D60575A002D44A4 /* UIButton+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIButton+Extensions.m"; path = "Utilities/UIButton+Extensions.m"; sourceTree = "<group>"; };
+		EDE9CF891D60DD2E002D44A4 /* OpenAnimator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = OpenAnimator.h; path = Utilities/OpenAnimator.h; sourceTree = "<group>"; };
+		EDE9CF8A1D60DD3D002D44A4 /* OpenAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OpenAnimator.m; path = Utilities/OpenAnimator.m; sourceTree = "<group>"; };
+		EDE9CF8C1D60EA4F002D44A4 /* TransitionProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TransitionProtocol.h; path = Utilities/TransitionProtocol.h; sourceTree = "<group>"; };
+		EDE9CF8D1D60EAD9002D44A4 /* UIVIew+Snapshooting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "UIVIew+Snapshooting.h"; path = "Utilities/UIVIew+Snapshooting.h"; sourceTree = "<group>"; };
+		EDE9CF8E1D60EB13002D44A4 /* UIView+Snapshooting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+Snapshooting.m"; path = "Utilities/UIView+Snapshooting.m"; sourceTree = "<group>"; };
 		EDECDFBC1D5EEA510082F99F /* SFPullToRefreshView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SFPullToRefreshView.h; path = Views/SFPullToRefreshView.h; sourceTree = "<group>"; };
 		EDECDFBD1D5EEA6A0082F99F /* SFPullToRefreshView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SFPullToRefreshView.m; path = Views/SFPullToRefreshView.m; sourceTree = "<group>"; };
 		EDECDFBF1D5EF34D0082F99F /* UIColor+SharkFeed.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "UIColor+SharkFeed.h"; path = "Utilities/UIColor+SharkFeed.h"; sourceTree = "<group>"; };
@@ -164,6 +171,11 @@
 				EDA6DE3B1D5D248F002CF962 /* ImageDownloadOperation.m */,
 				EDECDFBF1D5EF34D0082F99F /* UIColor+SharkFeed.h */,
 				EDECDFC01D5EF3640082F99F /* UIColor+SharkFeed.m */,
+				EDE9CF891D60DD2E002D44A4 /* OpenAnimator.h */,
+				EDE9CF8A1D60DD3D002D44A4 /* OpenAnimator.m */,
+				EDE9CF8C1D60EA4F002D44A4 /* TransitionProtocol.h */,
+				EDE9CF8D1D60EAD9002D44A4 /* UIVIew+Snapshooting.h */,
+				EDE9CF8E1D60EB13002D44A4 /* UIView+Snapshooting.m */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -322,6 +334,7 @@
 				EDA6DE261D5A8881002CF962 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
 				EDA6DE3C1D5D248F002CF962 /* ImageDownloadOperation.m in Sources */,
 				EDE9CF811D6020C9002D44A4 /* DetailModel.m in Sources */,
+				EDE9CF8F1D60EB13002D44A4 /* UIView+Snapshooting.m in Sources */,
 				EDA6DE241D5A8881002CF962 /* MASViewConstraint.m in Sources */,
 				EDA6DE321D5C1327002CF962 /* JLApi.m in Sources */,
 				EDA6DE1F1D5A8881002CF962 /* MASCompositeConstraint.m in Sources */,
@@ -336,6 +349,7 @@
 				EDA6DE281D5A8881002CF962 /* ViewController+MASAdditions.m in Sources */,
 				EDA6DE271D5A8881002CF962 /* View+MASAdditions.m in Sources */,
 				EDA6DE361D5C1F14002CF962 /* PhotoModel.m in Sources */,
+				EDE9CF8B1D60DD3D002D44A4 /* OpenAnimator.m in Sources */,
 				EDA6DE231D5A8881002CF962 /* MASViewAttribute.m in Sources */,
 				EDA6DE201D5A8881002CF962 /* MASConstraint.m in Sources */,
 				EDECDFC11D5EF3640082F99F /* UIColor+SharkFeed.m in Sources */,

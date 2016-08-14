@@ -10,6 +10,7 @@
 #import "HomeCollectionViewController.h"
 #import "ImageDownloadOperation.h"
 #import "DetailViewController.h"
+#import "OpenAnimator.h"
 
 
 static CGFloat const SFPullToRefreshViewHeight = 130;
@@ -33,6 +34,7 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = YES;
+    self.navigationController.delegate = self;
     [self initNavigationBar];
     [self initData];
 }
@@ -165,12 +167,14 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     PhotoModel *photo = [photoArray objectAtIndex:indexPath.row];
     NSString *url = [photo.urlCommon isEqualToString:@""] ? photo.urlOrigin : photo.urlCommon;
-    
+    selectedIndex = indexPath;
     if ([imageCache objectForKey:url] != nil) {
         DetailViewController *detailVC = [[DetailViewController alloc] init];
         detailVC.photo = photo;
         detailVC.lowResImage = [imageCache objectForKey:url];
-        [self.navigationController pushViewController:detailVC animated:YES];
+        detailVC.transitioningDelegate = self;
+//        [self.navigationController pushViewController:detailVC animated:YES];
+        [self presentViewController:detailVC animated:YES completion:^{}];
     }
 }
 
@@ -271,5 +275,19 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
         }];
     });
 }
+
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
+    return [[OpenAnimator alloc] init];
+}
+
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
+    return [[OpenAnimator alloc] init];
+}
+
+- (UIView *)viewForTransition {
+    HomeCollectionViewCell *cell = (HomeCollectionViewCell *)[self.photoCollection cellForItemAtIndexPath:selectedIndex];
+    return cell.imageView;
+}
+
 
 @end

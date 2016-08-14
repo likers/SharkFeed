@@ -145,7 +145,8 @@
 }
 
 - (void)backAction {
-    [self.navigationController popViewControllerAnimated:YES];
+//    [self.navigationController popViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:^{}];
 }
 
 - (void)initBottomBar {
@@ -181,6 +182,10 @@
     UIApplication *application = [UIApplication sharedApplication];
     NSString *url = [NSString stringWithFormat:@"flickr://photos/%@/%@", detail.userName, detail.photoId];
     [application openURL:[NSURL URLWithString:url]];
+}
+
+- (UIView *)viewForTransition {
+    return photoView;
 }
 
 @end

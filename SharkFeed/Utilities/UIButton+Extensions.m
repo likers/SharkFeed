@@ -2,8 +2,8 @@
 //  UIButton+Extensions.m
 //  v_life
 //
-//  Created by Jinhuan Li on 9/14/15.
-//  Copyright (c) 2015 cetetek. All rights reserved.
+//  Created by Jinhuan Li on 8/13/16.
+//  Copyright © 2016 likers33. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

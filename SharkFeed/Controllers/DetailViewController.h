@@ -9,9 +9,10 @@
 #import "PhotoModel.h"
 #import "DetailModel.h"
 #import "DetailBottomBarView.h"
+#import "TransitionProtocol.h"
 
 
-@interface DetailViewController : UIViewController<DetailBottomBarViewDelegate> {
+@interface DetailViewController : UIViewController<DetailBottomBarViewDelegate, TransitionProtocol> {
     UIView *topBarBackground;
     DetailBottomBarView *bottomBar;
     DetailModel *detail;

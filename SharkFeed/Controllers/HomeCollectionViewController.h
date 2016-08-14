@@ -10,8 +10,9 @@
 #import "JLApi.h"
 #import "PhotoModel.h"
 #import "SFPullToRefreshView.h"
+#import "Transitionprotocol.h"
 
-@interface HomeCollectionViewController : UIViewController<UICollectionViewDelegate, UICollectionViewDataSource> {
+@interface HomeCollectionViewController : UIViewController<UICollectionViewDelegate, UICollectionViewDataSource, UIViewControllerTransitioningDelegate, TransitionProtocol, UINavigationControllerDelegate> {
     CGFloat viewMargin;
     CGFloat cellSize;
     NSOperationQueue *downloadQueue;
@@ -19,6 +20,7 @@
     NSInteger currentPage;
     BOOL isLoadingMore;
     SFPullToRefreshView *refreshView;
+    NSIndexPath *selectedIndex;
 }
 
 @property (nonatomic, strong) UICollectionView *photoCollection;
