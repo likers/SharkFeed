@@ -35,6 +35,13 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = YES;
     self.navigationController.delegate = self;
+    
+    // register for 3D Touch (if available)
+    if (self.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable)
+    {
+        [self registerForPreviewingWithDelegate:(id)self sourceView:self.view];
+    }
+    
     [self initNavigationBar];
     [self initData];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
@@ -340,6 +347,28 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillTerminateNotification object:nil];
     
+}
+
+#pragma mark - 3D touch related
+- (UIViewController *)previewingContext:(id<UIViewControllerPreviewing>)previewingContext viewControllerForLocation:(CGPoint)location
+{
+    NSIndexPath *indexPath = [photoCollection indexPathForItemAtPoint:location];
+    HomeCollectionViewCell *cell = [photoCollection dequeueReusableCellWithReuseIdentifier:@"cellIdentifier" forIndexPath:indexPath];
+    PhotoModel *photo = [photoArray objectAtIndex:indexPath.row];
+    NSString *url = [photo.urlCommon isEqualToString:@""] ? photo.urlOrigin : photo.urlCommon;
+    selectedIndex = indexPath;
+    
+    DetailViewController *detailVC = [[DetailViewController alloc] init];
+    detailVC.photo = photo;
+    detailVC.lowResImage = [imageCache objectForKey:url];
+//    detailVC.preferredContentSize = CGSizeMake(0.0, 300);
+    [previewingContext setSourceRect:cell.frame];
+    return detailVC;
+}
+
+- (void)previewingContext:(id<UIViewControllerPreviewing>)previewingContext commitViewController:(UIViewController *)viewControllerToCommit
+{
+    [self showViewController:viewControllerToCommit sender:self];
 }
 
 @end

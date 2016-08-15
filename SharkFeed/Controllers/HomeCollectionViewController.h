@@ -12,7 +12,7 @@
 #import "SFPullToRefreshView.h"
 #import "Transitionprotocol.h"
 
-@interface HomeCollectionViewController : UIViewController<UICollectionViewDelegate, UICollectionViewDataSource, UIViewControllerTransitioningDelegate, TransitionProtocol, UINavigationControllerDelegate> {
+@interface HomeCollectionViewController : UIViewController<UICollectionViewDelegate, UICollectionViewDataSource, UIViewControllerTransitioningDelegate, TransitionProtocol, UINavigationControllerDelegate, UIViewControllerPreviewingDelegate> {
     CGFloat viewMargin;
     CGFloat cellSize;
     NSOperationQueue *downloadQueue;
