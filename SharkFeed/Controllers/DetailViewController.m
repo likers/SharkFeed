@@ -67,17 +67,15 @@
 }
 
 - (void)initPhotoView {
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnImage:)];
-//    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
-//    [doubleTap setNumberOfTapsRequired:2];
     photoView = [[UIImageView alloc] initWithImage:self.lowResImage];
+    photoView.frame = self.view.frame;
     photoView.contentMode = UIViewContentModeScaleAspectFit;
-    photoView.userInteractionEnabled = YES;
-    [photoView addGestureRecognizer:tap];
+    [self addGestureRecognizerToView:photoView];
+    [photoView setUserInteractionEnabled:YES];
+    [photoView setMultipleTouchEnabled:YES];
     [self.view addSubview:photoView];
-    [photoView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.view);
-    }];
+    
+    minFrame = photoView.frame;
 }
 
 - (void)tapOnImage:(UIGestureRecognizer *)gestureRecognizer {
@@ -194,6 +192,39 @@
 
 - (UIImage *)imageToTrans {
     return photoView.image;
+}
+
+- (void)addGestureRecognizerToView:(UIView *)view {
+    UIPinchGestureRecognizer *pinchGestureRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchView:)];
+    [view addGestureRecognizer:pinchGestureRecognizer];
+    
+    UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panView:)];
+    [view addGestureRecognizer:panGestureRecognizer];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnImage:)];
+    [view addGestureRecognizer:tap];
+}
+
+- (void)pinchView:(UIPinchGestureRecognizer *)pinchGestureRecognizer {
+    UIView *view = pinchGestureRecognizer.view;
+    if (pinchGestureRecognizer.state == UIGestureRecognizerStateBegan || pinchGestureRecognizer.state == UIGestureRecognizerStateChanged) {
+        view.transform = CGAffineTransformScale(view.transform, pinchGestureRecognizer.scale, pinchGestureRecognizer.scale);
+        if (photoView.frame.size.width < minFrame.size.width) {
+            photoView.frame = minFrame;
+        }
+        pinchGestureRecognizer.scale = 1;
+    }
+}
+
+- (void)panView:(UIPanGestureRecognizer *)panGestureRecognizer {
+    UIView *view = panGestureRecognizer.view;
+    if (panGestureRecognizer.state == UIGestureRecognizerStateBegan || panGestureRecognizer.state == UIGestureRecognizerStateChanged) {
+        if (photoView.frame.size.width > deviceWidth) {
+            CGPoint translation = [panGestureRecognizer translationInView:view.superview];
+            [view setCenter:(CGPoint){view.center.x + translation.x, view.center.y + translation.y}];
+            [panGestureRecognizer setTranslation:CGPointZero inView:view.superview];
+        }
+    }
 }
 
 @end

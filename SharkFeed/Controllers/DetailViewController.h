@@ -22,6 +22,9 @@
     UILabel *geoLabel;
     UIImageView *iconView;
     BOOL infoHidden;
+    CGFloat lastScale;
+    CGRect minFrame;
+    CGRect maxFrame;
 }
 
 @property (nonatomic, strong) PhotoModel *photo;
