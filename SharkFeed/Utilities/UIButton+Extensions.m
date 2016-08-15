@@ -16,6 +16,11 @@
 
 static const NSString *KEY_HIT_TEST_EDGE_INSETS = @"HitTestEdgeInsets";
 
+/**
+ *  Category that reset UIbutton's "hot zoon", get larger tapable area
+ *
+ *  @param hitTestEdgeInsets
+ */
 -(void)setHitTestEdgeInsets:(UIEdgeInsets)hitTestEdgeInsets {
     NSValue *value = [NSValue value:&hitTestEdgeInsets withObjCType:@encode(UIEdgeInsets)];
     objc_setAssociatedObject(self, &KEY_HIT_TEST_EDGE_INSETS, value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);

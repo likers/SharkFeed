@@ -15,7 +15,6 @@
 
 @synthesize photo, lowResImage;
 
-
 - (BOOL)prefersStatusBarHidden {
     return YES;
 }
@@ -32,10 +31,10 @@
     [self downloadHighResImage];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-}
-
+#pragma mark - Getting Data
+/**
+ *  Fetch photo detail infomation from server
+ */
 - (void)fetchDetail {
     JLApi *api = [[JLApi alloc] init];
     [api getPhotoDetail:photo.photoId completion:^(NSData *data, NSInteger statusCode) {
@@ -47,6 +46,9 @@
             detail = [[DetailModel alloc] init];
             [detail setDetailModelWithDic:[result objectForKey:@"photo"]];
             dispatch_async(dispatch_get_main_queue(), ^{
+                /**
+                 *  Use title as description if it's empty
+                 */
                 [bottomBar updateDescription:[detail.photoDescription isEqualToString:@""] ? detail.photoTitle : detail.photoDescription];
                 [self addIconAndUserName];
             });
@@ -54,6 +56,9 @@
     }];
 }
 
+/**
+ *  Download high resolution image via url
+ */
 - (void)downloadHighResImage {
     JLApi *api = [[JLApi alloc] init];
     [api downloadImage:self.photo.urlOrigin completion:^(NSData *data, NSInteger statusCode) {
@@ -66,27 +71,26 @@
     }];
 }
 
+#pragma mark - Initial views
 - (void)initPhotoView {
     photoView = [[UIImageView alloc] initWithImage:self.lowResImage];
     photoView.frame = self.view.frame;
     photoView.contentMode = UIViewContentModeScaleAspectFit;
+    
     [self addGestureRecognizerToView:photoView];
     [photoView setUserInteractionEnabled:YES];
     [photoView setMultipleTouchEnabled:YES];
     [self.view addSubview:photoView];
     
+    /**
+     *  Minimum frame for photo zoom out
+     */
     minFrame = photoView.frame;
 }
 
-- (void)tapOnImage:(UIGestureRecognizer *)gestureRecognizer {
-    [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        topBarBackground.alpha = infoHidden;
-        bottomBar.alpha = infoHidden;
-    } completion:^(BOOL finished) {
-        infoHidden = !infoHidden;
-    }];
-}
-
+/**
+ *  Initial top bar which shows username, avatar and close button
+ */
 - (void)initTopBar {
     topBarBackground = [[UIView alloc] initWithFrame:CGRectZero];
     topBarBackground.backgroundColor = [UIColor clearColor];
@@ -110,6 +114,13 @@
     }];
 }
 
+- (void)backAction {
+    [self dismissViewControllerAnimated:YES completion:^{}];
+}
+
+/**
+ *  Add icon and username when detail information is ready
+ */
 - (void)addIconAndUserName {
     NSInteger hasIcon = 0;
     NSData *iconData = [NSData dataWithContentsOfURL:[NSURL URLWithString:detail.userIconUrl]];
@@ -142,11 +153,9 @@
     [userNameLabel sizeToFit];
 }
 
-- (void)backAction {
-//    [self.navigationController popViewControllerAnimated:YES];
-    [self dismissViewControllerAnimated:YES completion:^{}];
-}
-
+/**
+ *  Add custom DetailBottomBarView to bottom
+ */
 - (void)initBottomBar {
     bottomBar = [[DetailBottomBarView alloc] initWithFrame:CGRectZero];
     bottomBar.delegate = self;
@@ -157,11 +166,12 @@
     }];
 }
 
+#pragma mark - DetailBottomBarView delegates
 - (void)didClickDownload {
     if (highResImage != nil) {
         UIImageWriteToSavedPhotosAlbum(highResImage, self, @selector(savedPhotoImage:didFinishSavingWithError:contextInfo:), nil);
     } else {
-        UIImageWriteToSavedPhotosAlbum(highResImage, self, @selector(savedPhotoImage:didFinishSavingWithError:contextInfo:), nil);
+        UIImageWriteToSavedPhotosAlbum(lowResImage, self, @selector(savedPhotoImage:didFinishSavingWithError:contextInfo:), nil);
     }
 }
 
@@ -182,6 +192,8 @@
     [application openURL:[NSURL URLWithString:url]];
 }
 
+
+#pragma mark - Custom transition delegate
 - (UIView *)viewForTransition {
     return photoView;
 }
@@ -194,6 +206,12 @@
     return photoView.image;
 }
 
+#pragma mark - Gesture related
+/**
+ *  Add Pinch, Pan, Tap gesture to photoView
+ *
+ *  @param view photoView
+ */
 - (void)addGestureRecognizerToView:(UIView *)view {
     UIPinchGestureRecognizer *pinchGestureRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchView:)];
     [view addGestureRecognizer:pinchGestureRecognizer];
@@ -225,6 +243,15 @@
             [panGestureRecognizer setTranslation:CGPointZero inView:view.superview];
         }
     }
+}
+
+- (void)tapOnImage:(UIGestureRecognizer *)gestureRecognizer {
+    [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        topBarBackground.alpha = infoHidden;
+        bottomBar.alpha = infoHidden;
+    } completion:^(BOOL finished) {
+        infoHidden = !infoHidden;
+    }];
 }
 
 @end

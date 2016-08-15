@@ -19,12 +19,14 @@
     UIImageView *photoView;
     UIImage *highResImage;
     UILabel *userNameLabel;
-    UILabel *geoLabel;
     UIImageView *iconView;
+    
+    /**
+     *  YES when top and bottom bar are hidden
+     */
     BOOL infoHidden;
-    CGFloat lastScale;
+    
     CGRect minFrame;
-    CGRect maxFrame;
 }
 
 @property (nonatomic, strong) PhotoModel *photo;

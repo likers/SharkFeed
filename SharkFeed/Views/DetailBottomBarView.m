@@ -37,6 +37,10 @@
     }];
 }
 
+/**
+ *  Initial action buttons
+ *  TODO: use stack view of IB of other better way to reduce code
+ */
 - (void)initActionButtons {
     UIButton *downloadButton = [[UIButton alloc] initWithFrame:CGRectZero];
     downloadButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
@@ -98,6 +102,12 @@
     }];
 }
 
+- (void)updateDescription:(NSString *)text {
+    [descriptionLabel setText:text];
+    descriptionLabel.numberOfLines = 5;
+    [descriptionLabel sizeToFit];
+}
+
 - (void)downloadAction {
     [delegate didClickDownload];
 }
@@ -106,11 +116,7 @@
     [delegate didClickOpenInFlickr];
 }
 
-- (void)updateDescription:(NSString *)text {
-    [descriptionLabel setText:text];
-    descriptionLabel.numberOfLines = 5;
-    [descriptionLabel sizeToFit];
-}
+
 
 
 @end

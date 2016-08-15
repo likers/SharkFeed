@@ -41,8 +41,6 @@
     if ([data length] > 0) {
         UIImage *image = [UIImage imageWithData:data];
         [self.mCache setObject:image forKey:imageUrl];
-    } else {
-        
     }
 }
 

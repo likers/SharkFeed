@@ -59,6 +59,9 @@
     }];
 }
 
+/**
+ *  Fish rotation animation
+ */
 - (void)startAnimating {
     titleLabel.text = @"Feeding...";
     CAKeyframeAnimation *rotation = [CAKeyframeAnimation animation];
@@ -74,6 +77,12 @@
     [fishImageView.layer addAnimation:rotation forKey:@"feeding"];
 }
 
+/**
+ *  Stop rotate animation, start fish up animation
+ *  TODO: refactor to get a better handle of view resume
+ *
+ *  @param complete completion block
+ */
 - (void)stopAnimating:(void(^)(void))complete {
     [fishImageView.layer removeAllAnimations];
     titleLabel.text = @"Gocha!";

@@ -13,12 +13,26 @@
 #import "Transitionprotocol.h"
 
 @interface HomeCollectionViewController : UIViewController<UICollectionViewDelegate, UICollectionViewDataSource, UIViewControllerTransitioningDelegate, TransitionProtocol, UINavigationControllerDelegate, UIViewControllerPreviewingDelegate> {
+    
     CGFloat viewMargin;
     CGFloat cellSize;
     NSOperationQueue *downloadQueue;
+    
+    /**
+     *  Dictionary that stores all downloading operations
+     */
     NSMutableDictionary *pendingDownloadDic;
+    
+    /**
+     *  Current page number(actually it's better to be nextPage) for api request
+     */
     NSInteger currentPage;
+    
+    /**
+     *  YES when fetching data from server
+     */
     BOOL isLoadingMore;
+    
     SFPullToRefreshView *refreshView;
     NSIndexPath *selectedIndex;
 }
