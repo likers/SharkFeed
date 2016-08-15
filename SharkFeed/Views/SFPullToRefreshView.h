@@ -16,12 +16,11 @@ typedef NS_ENUM(NSUInteger, SFPullToRefreshState) {
     UILabel *titleLabel;
     UIImageView *hookImageView;
     UIImageView *fishImageView;
-    NSMutableArray *titles;
 }
 
 @property (nonatomic, assign) SFPullToRefreshState state;
 
-//- (void)startAnimating;
-//- (void)stopAnimating;
+- (void)startAnimating;
+- (void)stopAnimating:(void(^)(void))complete;
 
 @end

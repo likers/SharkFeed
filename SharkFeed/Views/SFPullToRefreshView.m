@@ -20,11 +20,6 @@
         // default styling values
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         self.state = SFPullToRefreshStateStopped;
-        
-        titles = [NSMutableArray arrayWithObjects:@"Pull to refresh sharks",
-                       @"Release to refresh",
-                       @"Loading...",
-                       nil];
         [self initViews];
     }
     
@@ -61,6 +56,36 @@
         make.height.equalTo(@20);
         make.left.right.equalTo(self);
         make.top.equalTo(self).offset(100);
+    }];
+}
+
+- (void)startAnimating {
+    titleLabel.text = @"Feeding...";
+    CAKeyframeAnimation *rotation = [CAKeyframeAnimation animation];
+    rotation.keyPath = @"transform.rotation";
+    rotation.values = @[ @0, @0.2, @-0.2, @0];
+    rotation.duration = 0.3;
+    rotation.timingFunctions = @[
+                                 [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut],
+                                 [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut],
+                                 [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]
+                                 ];
+    rotation.repeatCount = HUGE_VAL;
+    [fishImageView.layer addAnimation:rotation forKey:@"feeding"];
+}
+
+- (void)stopAnimating:(void(^)(void))complete {
+    [fishImageView.layer removeAllAnimations];
+    titleLabel.text = @"Gocha!";
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        fishImageView.frame = CGRectMake(fishImageView.frame.origin.x, fishImageView.frame.origin.y-15, fishImageView.frame.size.width, fishImageView.frame.size.height);
+    } completion:^(BOOL finished) {
+        complete();
+        [UIView animateWithDuration:0.4 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            fishImageView.frame = CGRectMake(fishImageView.frame.origin.x, fishImageView.frame.origin.y+15, fishImageView.frame.size.width, fishImageView.frame.size.height);
+        } completion:^(BOOL finished) {
+            titleLabel.text = @"Pull to refresh sharks";
+        }];
     }];
 }
 

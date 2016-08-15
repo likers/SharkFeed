@@ -101,8 +101,10 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
                     });
                 } else if (isPullToRefresh) {
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [self resumeScrollViewUp:self.photoCollection completion:^{
-                            [self.photoCollection reloadData];
+                        [refreshView stopAnimating:^{
+                            [self resumeScrollViewUp:self.photoCollection completion:^{
+                                [self.photoCollection reloadData];
+                            }];
                         }];
                     });
                 }
@@ -244,6 +246,7 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
     if (contentOffsetY <= -60 && refreshView.state == SFPullToRefreshStateStopped) {
         [self pullScrollViewDown:scrollView completion:^{
             refreshView.state = SFPullToRefreshStateLoading;
+            [refreshView startAnimating];
             [self cancelAllDownloads];
             [self getDataForPage:1 isRefresh:YES];
         }];
