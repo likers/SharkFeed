@@ -37,6 +37,8 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
     self.navigationController.delegate = self;
     [self initNavigationBar];
     [self initData];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillTerminate:) name:UIApplicationWillTerminateNotification object:nil];
 }
 
 - (void)initNavigationBar {
@@ -83,7 +85,7 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
             NSDictionary* result = [NSJSONSerialization JSONObjectWithData:data
                                                                    options:kNilOptions
                                                                      error:&error];
-            NSLog(@"total1: %ld", [[[result objectForKey:@"photos"] objectForKey:@"total"] integerValue]);
+//            NSLog(@"total1: %ld", [[[result objectForKey:@"photos"] objectForKey:@"total"] integerValue]);
             if (isPullToRefresh) {
                 [photoArray removeAllObjects];
             }
@@ -92,7 +94,7 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
                 [photo setPhotoModelWithDic:dic];
                 [photoArray addObject:photo];
             }
-            NSLog(@"total2: %lu", (unsigned long)[photoArray count]);
+//            NSLog(@"total2: %lu", (unsigned long)[photoArray count]);
             
             if (page == 1) {
                 if (!isPullToRefresh) {
@@ -122,7 +124,8 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
     flowLayout.minimumInteritemSpacing = 6;
     flowLayout.minimumLineSpacing = 6;
-    flowLayout.sectionInset = UIEdgeInsetsMake(0, 21, 0, 21);
+    flowLayout.sectionInset = UIEdgeInsetsMake(0, viewMargin, 0, viewMargin);
+    
     
     photoCollection = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];
     photoCollection.delegate = self;
@@ -133,11 +136,13 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
     
     [photoCollection mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.bottom.right.equalTo(self.view);
-        make.top.equalTo(self.view.mas_top).offset(navBarHeight+viewMargin);
+//        make.top.equalTo(self.view.mas_top).offset(navBarHeight+viewMargin);
+        make.top.equalTo(self.view.mas_top).offset(navBarHeight);
     }];
     
     refreshView = [[SFPullToRefreshView alloc] initWithFrame:CGRectMake(0, -SFPullToRefreshViewHeight, photoCollection.frame.size.width, SFPullToRefreshViewHeight)];
     [photoCollection addSubview:refreshView];
+    [photoCollection setContentInset:UIEdgeInsetsMake(viewMargin, 0, 0, 0)];
 }
 
 // MARK: collectionView datasource and delegation
@@ -282,9 +287,9 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
 - (void)pullScrollViewDown:(UIScrollView *)scrollView completion:(void(^)(void))complete {
     CGFloat contentOffsetX = scrollView.contentOffset.x;
     refreshView.state = SFPullToRefreshStateTriggered;
-    [scrollView setContentInset:UIEdgeInsetsMake(130, 0, 0, 0)];
+    [scrollView setContentInset:UIEdgeInsetsMake(SFPullToRefreshViewHeight, 0, 0, 0)];
     [UIView animateWithDuration:0.3 animations:^{
-        [scrollView setContentOffset:CGPointMake(contentOffsetX, -130)];
+        [scrollView setContentOffset:CGPointMake(contentOffsetX, -SFPullToRefreshViewHeight)];
     } completion:^(BOOL finished) {
         complete();
     }];
@@ -295,8 +300,8 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
     dispatch_async(dispatch_get_main_queue(), ^{
         CGFloat contentOffsetX = self.photoCollection.contentOffset.x;
         [UIView animateWithDuration:0.3 animations:^{
-            [self.photoCollection setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
-            [self.photoCollection setContentOffset:CGPointMake(contentOffsetX, 0)];
+            [self.photoCollection setContentInset:UIEdgeInsetsMake(viewMargin, 0, 0, 0)];
+            [self.photoCollection setContentOffset:CGPointMake(contentOffsetX, -viewMargin)];
         } completion:^(BOOL finished) {
             complete();
         }];
@@ -324,6 +329,17 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
 - (UIImage *)imageToTrans {
     HomeCollectionViewCell *cell = (HomeCollectionViewCell *)[self.photoCollection cellForItemAtIndexPath:selectedIndex];
     return cell.imageView.image;
+}
+
+-(void)appWillActive:(NSNotification*)note
+{
+    [photoCollection reloadData];
+}
+-(void)appWillTerminate:(NSNotification*)note
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillTerminateNotification object:nil];
+    
 }
 
 @end
