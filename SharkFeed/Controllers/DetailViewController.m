@@ -188,4 +188,12 @@
     return photoView;
 }
 
+- (CGRect)rectForViewToTrans {
+    return photoView.frame;
+}
+
+- (UIImage *)imageToTrans {
+    return photoView.image;
+}
+
 @end

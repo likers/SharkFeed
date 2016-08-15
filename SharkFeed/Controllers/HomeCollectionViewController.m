@@ -289,5 +289,14 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
     return cell.imageView;
 }
 
+- (CGRect)rectForViewToTrans {
+    HomeCollectionViewCell *cell = (HomeCollectionViewCell *)[self.photoCollection cellForItemAtIndexPath:selectedIndex];
+    return cell.frame;
+}
+
+- (UIImage *)imageToTrans {
+    HomeCollectionViewCell *cell = (HomeCollectionViewCell *)[self.photoCollection cellForItemAtIndexPath:selectedIndex];
+    return cell.imageView.image;
+}
 
 @end

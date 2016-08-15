@@ -9,6 +9,9 @@
 
 @protocol TransitionProtocol <NSObject>
 
--(UIView *)viewForTransition;
+- (UIView *)viewForTransition;
+@optional
+- (CGRect)rectForViewToTrans;
+- (UIImage *)imageToTrans;
 
 @end

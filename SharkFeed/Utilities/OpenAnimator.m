@@ -12,13 +12,11 @@
 
 @implementation OpenAnimator
 
-- (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext
-{
-    return 0.5;
+- (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext {
+    return 0.3;
 }
 
-- (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext
-{
+- (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext {
     UIViewController<TransitionProtocol> *toViewController = (id)[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     UIViewController<TransitionProtocol> *fromViewController = (id)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     UIView *containerView = [transitionContext containerView];
@@ -31,13 +29,17 @@
     toViewController.view.frame = [transitionContext finalFrameForViewController:toViewController];
     
     // view for transition
-    
     UIView *toZoomView = [toViewController viewForTransition];
     UIView *fromZoomView = [fromViewController viewForTransition];
     
-    UIImageView *animatingImageView = [self initialZoomSnapshotFromView:fromZoomView destinationView:toZoomView];
-    animatingImageView.frame = CGRectIntegral([fromZoomView.superview convertRect:fromZoomView.frame toView:containerView]);
+    //check trans direction:
+    BOOL isFromListToDetail = fromZoomView.frame.size.width < toZoomView.frame.size.width;
     
+    //make animatingImageView
+    UIImageView *animatingImageView = [[UIImageView alloc] initWithImage:[fromViewController imageToTrans]];
+    animatingImageView.frame = CGRectIntegral([fromZoomView.superview convertRect:fromZoomView.frame toView:containerView]);
+    animatingImageView.contentMode = UIViewContentModeScaleAspectFill;
+    animatingImageView.clipsToBounds = YES;
     // hide original zoom views
     fromZoomView.alpha = 0;
     toZoomView.alpha = 0;
@@ -49,17 +51,9 @@
     // add animating image view
     [containerView addSubview:animatingImageView];
     
-//    [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
-//        fromViewController.view.transform = CGAffineTransformMakeScale(0.1, 0.1);
-//        toViewController.view.alpha = 1;
-//    } completion:^(BOOL finished) {
-//        fromViewController.view.transform = CGAffineTransformIdentity;
-//        [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
-//        
-//    }];
-    
     [UIView animateKeyframesWithDuration:[self transitionDuration:transitionContext] delay:0 options:UIViewKeyframeAnimationOptionCalculationModeCubic animations:^{
         animatingImageView.frame = CGRectIntegral([toZoomView.superview convertRect:toZoomView.frame toView:containerView]);
+        animatingImageView.contentMode = isFromListToDetail ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleAspectFill;
         backgroundView.alpha = 0;
     } completion:^(BOOL finished) {
         [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
@@ -73,15 +67,9 @@
 -(UIImageView *)snapshotImageViewFromView:(UIView *)view {
     UIImage * snapshot = [view takeSnapshot];
     UIImageView * imageView = [[UIImageView alloc] initWithImage:snapshot];
-    imageView.contentMode = UIViewContentModeScaleAspectFill;
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
     imageView.clipsToBounds = YES;
     return imageView;
-}
-
--(UIImageView *)initialZoomSnapshotFromView:(UIView *)sourceView
-                            destinationView:(UIView *)destinationView
-{
-    return [self snapshotImageViewFromView:(sourceView.bounds.size.width > destinationView.bounds.size.width) ? sourceView : destinationView];
 }
 
 @end

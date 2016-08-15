@@ -161,6 +161,7 @@
 		EDA6DE291D5BB616002CF962 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				EDE9CF931D613F66002D44A4 /* Animation */,
 				EDE9CF851D60575A002D44A4 /* UIButton+Extensions.h */,
 				EDE9CF861D60575A002D44A4 /* UIButton+Extensions.m */,
 				EDA6DE2A1D5BB683002CF962 /* Constants.h */,
@@ -171,11 +172,6 @@
 				EDA6DE3B1D5D248F002CF962 /* ImageDownloadOperation.m */,
 				EDECDFBF1D5EF34D0082F99F /* UIColor+SharkFeed.h */,
 				EDECDFC01D5EF3640082F99F /* UIColor+SharkFeed.m */,
-				EDE9CF891D60DD2E002D44A4 /* OpenAnimator.h */,
-				EDE9CF8A1D60DD3D002D44A4 /* OpenAnimator.m */,
-				EDE9CF8C1D60EA4F002D44A4 /* TransitionProtocol.h */,
-				EDE9CF8D1D60EAD9002D44A4 /* UIVIew+Snapshooting.h */,
-				EDE9CF8E1D60EB13002D44A4 /* UIView+Snapshooting.m */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -257,6 +253,18 @@
 				EDE9CF7D1D6004C0002D44A4 /* DetailViewController.m */,
 			);
 			name = Controllers;
+			sourceTree = "<group>";
+		};
+		EDE9CF931D613F66002D44A4 /* Animation */ = {
+			isa = PBXGroup;
+			children = (
+				EDE9CF891D60DD2E002D44A4 /* OpenAnimator.h */,
+				EDE9CF8A1D60DD3D002D44A4 /* OpenAnimator.m */,
+				EDE9CF8C1D60EA4F002D44A4 /* TransitionProtocol.h */,
+				EDE9CF8D1D60EAD9002D44A4 /* UIVIew+Snapshooting.h */,
+				EDE9CF8E1D60EB13002D44A4 /* UIView+Snapshooting.m */,
+			);
+			name = Animation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
