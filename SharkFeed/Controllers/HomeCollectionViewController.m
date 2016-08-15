@@ -153,8 +153,12 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
     if ([self.imageCache objectForKey:url] != nil) {
         cell.imageView.image = [self.imageCache objectForKey:url];
     } else {
-        cell.imageView.image = [UIImage imageNamed:@"PlaceHolder"];
-        [self downloadForUrl:url Index:indexPath];
+        if ([self.imageCache objectForKey:photo.urlTiny] != nil) {
+            cell.imageView.image = [self.imageCache objectForKey:photo.urlTiny];
+        } else {
+            cell.imageView.image = [UIImage imageNamed:@"PlaceHolder"];
+            [self downloadForUrlLow:photo.urlTiny High:url Index:indexPath];
+        }
     }
     
     return cell;
@@ -188,12 +192,12 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
 }
 
 // MARK: imageDownloader
-- (void)downloadForUrl:(NSString *)url Index:(NSIndexPath *)indexPath {
+- (void)downloadForUrlLow:(NSString *)lowurl High:(NSString *)highurl Index:(NSIndexPath *)indexPath {
     if ([pendingDownloadDic objectForKey:indexPath] != nil) {
         return;
     } else {
-        ImageDownloadOperation *downloader = [[ImageDownloadOperation alloc] initWithUrl:url Cache:self.imageCache];
-        downloader.completionBlock = ^{
+        ImageDownloadOperation *lowdownloader = [[ImageDownloadOperation alloc] initWithUrl:lowurl Cache:self.imageCache];
+        lowdownloader.completionBlock = ^{
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                 @try
                 {
@@ -208,8 +212,28 @@ static CGFloat const SFPullToRefreshViewHeight = 130;
                 }
             }];
         };
-        [pendingDownloadDic setObject:downloader forKey:indexPath];
-        [downloadQueue addOperation:downloader];
+        [pendingDownloadDic setObject:lowdownloader forKey:indexPath];
+        [downloadQueue addOperation:lowdownloader];
+        
+        ImageDownloadOperation *highdownloader = [[ImageDownloadOperation alloc] initWithUrl:highurl Cache:self.imageCache];
+        highdownloader.completionBlock = ^{
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                @try
+                {
+                    [pendingDownloadDic removeObjectForKey:indexPath];
+                    if (!isLoadingMore && refreshView.state == SFPullToRefreshStateStopped) {
+                        [self.photoCollection reloadItemsAtIndexPaths:@[indexPath]];
+                    }
+                }
+                @catch (NSException *except)
+                {
+                    NSLog(@"DEBUG: failure to insertItemsAtIndexPaths.  %@", except.description);
+                }
+            }];
+        };
+        [highdownloader addDependency:lowdownloader];
+        [pendingDownloadDic setObject:highdownloader forKey:indexPath];
+        [downloadQueue addOperation:highdownloader];
     }
 }
 
